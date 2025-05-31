@@ -1,4 +1,4 @@
-package com.example.elvo.application
+package com.example.elvo
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

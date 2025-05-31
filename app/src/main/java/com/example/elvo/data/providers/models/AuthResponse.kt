@@ -1,4 +1,4 @@
-package com.example.elvo.data.model;
+package com.example.elvo.data.providers.models
 
 data class AuthResponse(
     val accessToken: String,

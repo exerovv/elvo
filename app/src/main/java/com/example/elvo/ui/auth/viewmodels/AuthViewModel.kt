@@ -1,17 +1,17 @@
 package com.example.elvo.ui.auth.viewmodels
-//
-//import androidx.lifecycle.LiveData
-//import androidx.lifecycle.MutableLiveData
-//import androidx.lifecycle.ViewModel
-//import com.example.elvo.data.domains.repositories.AuthRepository
-//import dagger.hilt.android.lifecycle.HiltViewModel
-//import javax.inject.Inject
-//
-//@HiltViewModel
-//class AuthViewModel @Inject constructor(
-//    private val authRepository: AuthRepository
-//) : ViewModel() {
-//
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.example.elvo.data.implementations.AuthServiceImpl
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+
+@HiltViewModel
+class AuthViewModel @Inject constructor(
+    private val authServiceImpl: AuthServiceImpl
+) : ViewModel() {
+
 //    private val _authState = MutableLiveData<AuthState>(AuthState.Default)
 //    val authState: LiveData<AuthState> get() = _authState
 //
@@ -23,7 +23,7 @@ package com.example.elvo.ui.auth.viewmodels
 //
 //        _authState.postValue(AuthState.Loading)
 //
-//        authRepository.signIn(username, password, object : AuthCallback {
+//        authServiceImpl.signIn(username, password, object : AuthCallback {
 //            override fun onSuccess() {
 //                _authState.postValue(AuthState.Success)
 //            }
@@ -33,10 +33,10 @@ package com.example.elvo.ui.auth.viewmodels
 //            }
 //        })
 //    }
-//
-//
-//
-//    private fun isValidPassword(password: String): Boolean {
-//        return password.length >= 8
-//    }
-//}
+
+
+
+    private fun isValidPassword(password: String): Boolean {
+        return password.length >= 8
+    }
+}

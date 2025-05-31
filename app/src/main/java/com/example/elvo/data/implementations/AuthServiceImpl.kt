@@ -1,8 +1,8 @@
 package com.example.elvo.data.implementations
 
 
-//class AuthServiceImpl {
-//
+class AuthServiceImpl {
+
 //    companion object {
 //        private const val BASE_URL = ""
 //        private var authApi: AuthApi? = null
@@ -34,4 +34,4 @@ package com.example.elvo.data.implementations
 //            }
 //        }.subscribeOn(Schedulers.io())
 //    }
-//}
+}

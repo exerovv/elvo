@@ -1,71 +1,135 @@
-package com.example.elvo.ui.screens
+package com.example.myapplication
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
-import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.elvo.R
 
-import androidx.navigation.compose.*
-
-@Composable
 @Preview
+@Composable
 fun HomeScreen() {
-    val navController = rememberNavController()
-    val items = listOf(
-        BottomNavItem("Main", "Главная", Icons.Default.Home),
-        BottomNavItem("Orders", "Заказы", Icons.Default.ShoppingCart),
-        BottomNavItem("Profile", "Профиль", Icons.Default.Person)
-    )
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background( Color(0xFFF7FAFC))
+            .padding(horizontal = 16.dp)
+    ) {
+        Spacer(modifier = Modifier.height(24.dp))
 
-    Scaffold(
-        bottomBar = {
-            NavigationBar(
-                containerColor = Color.White,
-                contentColor = Color(0xFFD32F2F),
-                tonalElevation = 8.dp
-            ) {
-                val currentDestination = navController.currentBackStackEntryAsState().value?.destination?.route
-                items.forEach { item ->
-                    NavigationBarItem(
-                        icon = { Icon(item.icon, contentDescription = null) },
-                        label = { Text(item.label) },
-                        selected = currentDestination == item.route,
-                        onClick = {
-                            navController.navigate(item.route) {
-                                popUpTo(navController.graph.startDestinationId) { saveState = true }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = Color(0xFFD32F2F),
-                            selectedTextColor = Color(0xFFD32F2F),
-                            indicatorColor = Color(0xFFFFEBEE),
-                            unselectedIconColor = Color.Gray,
-                            unselectedTextColor = Color.Gray
-                        )
-                    )
-                }
-            }
-        },
-        containerColor = Color(0xFFFDF5F5)
-    ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = "Main",
-            modifier = Modifier.padding(innerPadding)
+        Text(
+            text = "Рекомендованное",
+            style = MaterialTheme.typography.titleMedium.copy(
+                fontWeight = FontWeight.Bold
+            )
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 4.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            composable("Main") { MainScreen() }
-            composable("Orders") { OrdersScreen() }
-            composable("Profile") { ProfileScreen() }
+            items(5) { index ->
+                ProductCard(
+                    name = "Название товара $index",
+                    imageRes = R.drawable.placeholder
+                )
+            }
         }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Text(
+            text = "О компании",
+            style = MaterialTheme.typography.titleMedium.copy(
+                fontWeight = FontWeight.Bold
+            )
+        )
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.elvo_logo),
+                contentDescription = "Логотип",
+                modifier = Modifier
+                    .size(80.dp)
+                    .clip(RoundedCornerShape(8.dp))
+            )
+        }
+
+        Text(
+            text = "Опыт и надёжность",
+            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold)
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = "Мы поставляем высококачественную продукцию от Poizon уже более 0 лет.",
+            style = MaterialTheme.typography.bodyMedium.copy(color = Color.Gray),
+            lineHeight = 20.sp
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+
+
+        Spacer(modifier = Modifier.height(24.dp))
     }
 }
 
-data class BottomNavItem(val route: String, val label: String, val icon: ImageVector)
+
+@Composable
+fun ProductCard(name: String, imageRes: Int) {
+    Column(
+        modifier = Modifier
+            .width(160.dp)
+            .clip(RoundedCornerShape(12.dp))
+    ) {
+        Image(
+            painter = painterResource(id = imageRes),
+            contentDescription = name,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .height(250.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(12.dp))
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = name,
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(horizontal = 8.dp)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+    }
+}
+
+
+

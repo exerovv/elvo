@@ -85,4 +85,9 @@ dependencies {
 
     //DataStore
     implementation(libs.androidx.datastore.preferences)
+
+    //EncryptedDataStore
+    implementation(libs.security.crypto.datastore.preferences)
+
+    //KotlinxSerialization
 }

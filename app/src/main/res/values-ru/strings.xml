@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="server_error">Ошибка на стороне сервера, пожалуйста, попробуйте позже</string>
+    <string name="incorrect_credentials">Логин или пароль имеют недопустимый формат</string>
+    <string name="short_password">Пароль должен содержать не менее 8 символов</string>
+    <string name="user_not_found">Пользователь с такими данными не найден</string>
+    <string name="user_already_exist">Пользователь с таким логином уже существует</string>
+    <string name="blank_credentials">Логин или пароль не могут быть пустыми</string>
+    <string name="invalid_login">Логин не может быть пустым</string>
+    <string name="invalid_password">Пароль должен быть длиной 8 символов и содержать хотя бы 1 букву и 1 цифру</string>
+    <string name="invalid_confirming_password">Пароль и подтверждающий пароль должны быть одинаковыми</string>
+</resources>

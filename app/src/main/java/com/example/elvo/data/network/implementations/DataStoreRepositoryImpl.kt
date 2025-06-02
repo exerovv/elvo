@@ -4,14 +4,14 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.example.elvo.domain.repositories.DataStorePreferencesRepository
+import com.example.elvo.domain.repositories.DataStoreRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class DataStorePreferencesRepositoryImpl @Inject constructor(
+class DataStoreRepositoryImpl @Inject constructor(
     private val dataStore: DataStore<Preferences>
-): DataStorePreferencesRepository {
+): DataStoreRepository {
     companion object{
         val ACCESS_TOKEN_KEY = stringPreferencesKey("access_token")
         val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")

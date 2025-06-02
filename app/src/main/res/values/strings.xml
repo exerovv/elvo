@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">Elvo</string>
+    <string name="app_name" translatable="false">Elvo</string>
+    <string name="server_error">The error is on server side, please try again later</string>
+    <string name="incorrect_credentials">The login or passowrd has an invalid format</string>
+    <string name="short_password">Password must contain at least 8 characters</string>
+    <string name="user_not_found">User with such credentials was not found</string>
+    <string name="user_already_exist">User with this login already exists</string>
+    <string name="blank_credentials">Credentials can not be blank</string>
+    <string name="invalid_login">Login can not be blank</string>
+    <string name="invalid_password">Password must be 8 characters long with at list 1 letter and 1 digit</string>
+    <string name="invalid_confirming_password">The password and confirmation password must be the same</string>
 </resources>

@@ -1,0 +1,25 @@
+package com.example.elvo.di
+
+import com.example.elvo.domain.repositories.AuthRepository
+import com.example.elvo.domain.repositories.DataStoreRepository
+import com.example.elvo.domain.usecase.LoginUseCase
+import com.example.elvo.domain.usecase.RegisterUseCase
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+
+
+@InstallIn(SingletonComponent::class)
+@Module
+object UseCaseModule {
+    @Provides
+    fun provideLoginUseCase(authRepository: AuthRepository, dataStoreRepository: DataStoreRepository): LoginUseCase{
+        return LoginUseCase(authRepository, dataStoreRepository)
+    }
+
+    @Provides
+    fun provideRegisterUseCase(authRepository: AuthRepository, dataStoreRepository: DataStoreRepository): RegisterUseCase{
+        return RegisterUseCase(authRepository, dataStoreRepository)
+    }
+}

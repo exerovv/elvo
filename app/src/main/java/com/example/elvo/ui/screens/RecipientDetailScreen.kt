@@ -57,6 +57,6 @@ fun RecipientField(label: String, value: String) {
         Text(label, style = MaterialTheme.typography.labelSmall, color = Color.Gray)
         Spacer(modifier = Modifier.height(4.dp))
         Text(value, style = MaterialTheme.typography.bodyLarge)
-        Divider(modifier = Modifier.padding(top = 8.dp))
+        HorizontalDivider(modifier = Modifier.padding(top = 8.dp))
     }
 }

@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,11 +28,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 
 
-@Preview(showBackground = true)
 @Composable
-fun OrderScreen() {
+fun OrderScreen(navController: NavController) {
     val tabs = listOf("Созданные", "В пути", "Завершенные")
     var selectedTabIndex by remember { mutableStateOf(1) }
 
@@ -79,7 +80,7 @@ fun OrderScreen() {
                 .padding(16.dp)
         ) {
             items(orders) { (id, name) ->
-                OrderCard(orderName = name, orderId = id)
+                OrderCard(orderName = name, orderId = id){navController.navigate("order_detail")}
                 Spacer(modifier = Modifier.height(12.dp))
             }
         }
@@ -87,14 +88,14 @@ fun OrderScreen() {
 }
 
 @Composable
-fun OrderCard(orderName: String, orderId: String) {
+fun OrderCard(orderName: String, orderId: String, onClick: () -> Unit) {
     Card(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         ),
         elevation = CardDefaults.cardElevation(4.dp),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth().clickable{ onClick() }
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(

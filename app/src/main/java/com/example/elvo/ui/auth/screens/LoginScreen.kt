@@ -13,6 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -43,7 +44,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit, onRegisterClick: () -> Unit, authVie
     LaunchedEffect(Unit) {
         authUIState.collect{ state ->
             when(state) {
-                is AuthUIState.Success -> Toast.makeText(context, "Successful login", Toast.LENGTH_LONG).show()
+                is AuthUIState.Success -> onLoginSuccess()
                 is AuthUIState.Loading -> Toast.makeText(context, "Loading...", Toast.LENGTH_SHORT).show()
                 is AuthUIState.Error -> Toast.makeText(context, state.errorResId, Toast.LENGTH_LONG).show()
                 else -> {}
@@ -67,11 +68,20 @@ fun LoginScreen(onLoginSuccess: () -> Unit, onRegisterClick: () -> Unit, authVie
 
                 Spacer(modifier = Modifier.height(32.dp))
 
+                val textFieldColors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color(0xFF0B57D0),
+                    unfocusedBorderColor = Color.Gray,
+                    cursorColor = Color(0xFF0B57D0),
+                    focusedLabelColor = Color(0xFF0B57D0),
+                    unfocusedLabelColor = Color.Gray
+                )
+
                 OutlinedTextField(
                     value = login,
                     onValueChange = { login = it },
                     label = { Text("Логин") },
                     modifier = Modifier.fillMaxWidth(),
+                    colors = textFieldColors
 
                     )
 
@@ -82,6 +92,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit, onRegisterClick: () -> Unit, authVie
                     onValueChange = {password = it },
                     label = { Text("Пароль") },
                     modifier = Modifier.fillMaxWidth(),
+                    colors = textFieldColors
 
                     )
 

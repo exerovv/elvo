@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.elvo.R
 import com.example.elvo.ui.auth.viewmodels.AuthUIState
 import com.example.elvo.ui.auth.viewmodels.AuthViewModel
 
@@ -47,7 +48,8 @@ fun LoginScreen(onLoginSuccess: () -> Unit, onRegisterClick: () -> Unit, authVie
                 is AuthUIState.Success -> onLoginSuccess()
                 is AuthUIState.Loading -> Toast.makeText(context, "Loading...", Toast.LENGTH_SHORT).show()
                 is AuthUIState.Error -> Toast.makeText(context, state.errorResId, Toast.LENGTH_LONG).show()
-                else -> {}
+                is AuthUIState.Unauthorized -> {}
+                is AuthUIState.UnknownError -> {Toast.makeText(context, context.getString(R.string.unknown_error), Toast.LENGTH_LONG).show()}
             }
         }
     }

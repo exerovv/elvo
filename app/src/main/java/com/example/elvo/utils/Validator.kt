@@ -19,7 +19,7 @@ object Validator {
     }
 
     private fun validatePassword(password: String): Boolean{
-        return password.isNotBlank() && ("^(?=[a-zA-Z0-9#@$?!^&*()]{8,}$)(?=.*?[a-zA-z])(?=.*?[0-9]).*".toRegex().matches(password))
+        return password.isNotBlank() && ("^(?=[a-zA-Z0-9#@$?!^&*()]{8,16}$)(?=.*?[a-zA-z])(?=.*?[0-9]).*".toRegex().matches(password))
     }
 
     private fun validateConfirmingPassword(password: String, confirmingPassword: String): Boolean{

@@ -1,6 +1,6 @@
 package com.example.elvo.domain.usecase
 
-import com.example.elvo.data.network.models.AuthResponse
+import com.example.elvo.data.network.models.AuthResult
 import com.example.elvo.data.network.models.TokenResponse
 import com.example.elvo.domain.repositories.AuthRepository
 import com.example.elvo.domain.repositories.DataStoreRepository
@@ -27,18 +27,23 @@ class LoginUseCase @Inject constructor(
             }
             emit(AuthState.Loading)
 
-            val result: AuthResponse<TokenResponse> = authRepository.signIn(login, password)
+            val result = authRepository.signIn(login, password)
 
-            if (!result.success) {
+            if (result is AuthResult.Error) {
                 emit(AuthState.Error(result.errorCode))
                 return@flow
             }
-
-            if (result.data != null) {
-                dataStoreRepository.saveTokens(
-                    accessToken = result.data.accessToken,
-                    refreshToken = result.data.refreshToken
-                )
+            if (result is AuthResult.Success) {
+                if (result.data != null && result.data is TokenResponse) {
+                    try {
+                        dataStoreRepository.saveTokens(
+                            accessToken = result.data.accessToken,
+                            refreshToken = result.data.refreshToken
+                        )
+                    } catch (e: Exception) {
+                        emit(AuthState.Error(null))
+                    }
+                }
             }
             emit(AuthState.Success)
         }

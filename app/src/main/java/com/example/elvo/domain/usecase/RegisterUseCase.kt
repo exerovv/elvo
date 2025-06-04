@@ -1,8 +1,9 @@
 package com.example.elvo.domain.usecase
 
-import com.example.elvo.data.network.models.AuthResult
-import com.example.elvo.data.network.models.TokenResponse
+import com.example.elvo.domain.enums.ErrorCodes
+import com.example.elvo.domain.model.AuthResult
 import com.example.elvo.domain.model.AuthState
+import com.example.elvo.domain.model.Error
 import com.example.elvo.domain.repositories.AuthRepository
 import com.example.elvo.domain.repositories.DataStoreRepository
 import com.example.elvo.utils.AuthValidationResult
@@ -26,27 +27,33 @@ class RegisterUseCase @Inject constructor(
             val validation = Validator.registerValidation(login, password, confirmationPassword)
 
             if (validation !is AuthValidationResult.Success) {
-                emit(AuthState.ValidationError(authValidationResult = validation))
+                val error = when (validation) {
+                    is AuthValidationResult.InvalidLogin -> Error(ErrorCodes.INVALID_LOGIN)
+                    is AuthValidationResult.InvalidPassword -> Error(ErrorCodes.INVALID_PASSWORD)
+                    is AuthValidationResult.InvalidConfirmingPassword -> Error(ErrorCodes.INVALID_CONFIRMING_PASSWORD)
+                    else -> Error(ErrorCodes.UNKNOWN_ERROR)
+                }
+                emit(AuthState.Failure(error))
                 return@flow
             }
             emit(AuthState.Loading)
 
-            val result = authRepository.signUp(login, password)
+            val result = authRepository.signIn(login, password)
 
-            if (result is AuthResult.Error) {
-                emit(AuthState.Error(result.errorCode))
+            if (result is AuthResult.Failure) {
+                emit(AuthState.Failure(result.error))
                 return@flow
             }
+
             if (result is AuthResult.Success) {
-                if (result.data != null && result.data is TokenResponse) {
-                    try {
-                        dataStoreRepository.saveTokens(
-                            accessToken = result.data.accessToken,
-                            refreshToken = result.data.refreshToken
-                        )
-                    } catch (e: Exception) {
-                        emit(AuthState.Error(null))
-                    }
+                try {
+                    dataStoreRepository.saveTokens(
+                        accessToken = result.data.accessToken,
+                        refreshToken = result.data.refreshToken
+                    )
+                } catch (e: Exception) {
+                    emit(AuthState.Failure(Error(ErrorCodes.UNKNOWN_ERROR)))
+                    return@flow
                 }
             }
             emit(AuthState.Success)

@@ -28,6 +28,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.elvo.ui.theme.PlusJakartaSans
 import com.example.elvo.R
 import com.example.elvo.ui.auth.screens.LoginScreen
+import com.example.elvo.ui.auth.screens.RegisterScreen
+import com.example.elvo.ui.screens.OrderingDetailScreen
 import com.example.myapplication.HomeScreen
 import com.example.myapplication.OrderScreen
 import com.example.myapplication.ProfileScreen
@@ -43,6 +45,8 @@ sealed class Screen(val route: String) {
     object Profile : Screen("profile")
     object RecipientList : Screen("recipient_list")
     object RecipientDetail : Screen("recipient_detail")
+    object OrderDetail : Screen("order_detail")
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -74,6 +78,7 @@ fun AppNavigation() {
                                 "home" -> "Главная"
                                 "recipient_list" -> "Список получателей"
                                 "recipient_detail" -> "Получатель"
+                                "order_detail" -> "Данные о заказе"
                                 else -> ""
                             },
 
@@ -179,18 +184,30 @@ fun AppNavigation() {
         ) {
             composable("login") {
                 LoginScreen(
-                    onLoginSuccess = { navController.navigate("home") },
+                    onLoginSuccess = {
+                        navController.navigate("home"){
+                            popUpTo("login") { inclusive = true }
+                        } },
                     onRegisterClick = { navController.navigate("register") }
                 )
             }
             composable("register") {
-                com.example.elvo.ui.auth.screens.RegisterScreen()
+                RegisterScreen(
+                    onLoginSuccess = {
+                        navController.navigate("home"){
+                            popUpTo("register") { inclusive = true }
+                        }
+                    }
+
+                )
             }
+
             composable("home") { HomeScreen() }
-            composable("orders") { OrderScreen() }
+            composable("orders") { OrderScreen(navController) }
             composable("profile") { ProfileScreen(navController) }
             composable("recipient_list") { RecipientListScreen(navController) }
             composable("recipient_detail") { RecipientDetailScreen(navController) }
+            composable("order_detail") { OrderingDetailScreen(navController) }
         }
     }
 }

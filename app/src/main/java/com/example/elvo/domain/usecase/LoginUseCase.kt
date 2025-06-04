@@ -35,10 +35,15 @@ class LoginUseCase @Inject constructor(
             }
 
             if (result.data != null) {
-                dataStoreRepository.saveTokens(
-                    accessToken = result.data.accessToken,
-                    refreshToken = result.data.refreshToken
-                )
+                try{
+                    dataStoreRepository.saveTokens(
+                        accessToken = result.data.accessToken,
+                        refreshToken = result.data.refreshToken
+                    )
+                }catch (e: Exception){
+                    emit(AuthState.Error(null))
+                }
+
             }
             emit(AuthState.Success)
         }

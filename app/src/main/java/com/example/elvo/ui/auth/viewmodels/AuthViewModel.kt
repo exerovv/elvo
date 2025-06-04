@@ -82,8 +82,11 @@ class AuthViewModel @Inject constructor(
                     ErrorCode.USER_ALREADY_EXISTS -> {
                         _authUIState.emit(AuthUIState.Error(R.string.user_already_exist))
                     }
-                    else ->{
+                    ErrorCode.SESSION_EXPIRED -> {
                         _authUIState.emit(AuthUIState.Unauthorized)
+                    }
+                    else ->{
+                        _authUIState.emit(AuthUIState.UnknownError)
                     }
                 }
             }

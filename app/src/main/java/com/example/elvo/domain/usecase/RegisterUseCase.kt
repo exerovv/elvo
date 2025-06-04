@@ -1,6 +1,6 @@
 package com.example.elvo.domain.usecase
 
-import com.example.elvo.data.network.models.AuthResponse
+import com.example.elvo.data.network.models.AuthResult
 import com.example.elvo.data.network.models.TokenResponse
 import com.example.elvo.domain.model.AuthState
 import com.example.elvo.domain.repositories.AuthRepository
@@ -16,8 +16,12 @@ import javax.inject.Inject
 class RegisterUseCase @Inject constructor(
     private val authRepository: AuthRepository,
     private val dataStoreRepository: DataStoreRepository
-){
-    operator fun invoke(login: String, password: String, confirmationPassword: String): Flow<AuthState> {
+) {
+    operator fun invoke(
+        login: String,
+        password: String,
+        confirmationPassword: String
+    ): Flow<AuthState> {
         val state = flow {
             val validation = Validator.registerValidation(login, password, confirmationPassword)
 
@@ -27,18 +31,23 @@ class RegisterUseCase @Inject constructor(
             }
             emit(AuthState.Loading)
 
-            val result: AuthResponse<TokenResponse> = authRepository.signUp(login, password)
+            val result = authRepository.signUp(login, password)
 
-            if (!result.success) {
+            if (result is AuthResult.Error) {
                 emit(AuthState.Error(result.errorCode))
                 return@flow
             }
-
-            if (result.data != null) {
-                dataStoreRepository.saveTokens(
-                    accessToken = result.data.accessToken,
-                    refreshToken = result.data.refreshToken
-                )
+            if (result is AuthResult.Success) {
+                if (result.data != null && result.data is TokenResponse) {
+                    try {
+                        dataStoreRepository.saveTokens(
+                            accessToken = result.data.accessToken,
+                            refreshToken = result.data.refreshToken
+                        )
+                    } catch (e: Exception) {
+                        emit(AuthState.Error(null))
+                    }
+                }
             }
             emit(AuthState.Success)
         }

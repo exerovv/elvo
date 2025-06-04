@@ -163,7 +163,11 @@ fun AppNavigation() {
                                 }
                             }
                         },
-                        icon = { Icon(Icons.Default.Person, contentDescription = "Профиль") },
+                        icon = {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_profile),
+                                contentDescription = "Профиль"
+                            ) },
                         label = { Text("Профиль") },
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = Color(0xFF0B57D0),

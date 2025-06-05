@@ -3,7 +3,6 @@ package com.example.elvo.ui.navigation
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,7 +32,7 @@ import com.example.elvo.ui.screens.FAQScreen
 import com.example.elvo.ui.screens.OrderingAddScreen
 import com.example.elvo.ui.screens.OrderingDetailScreen
 import com.example.elvo.ui.screens.RecipientAddScreen
-import com.example.myapplication.HomeScreen
+import com.example.elvo.ui.screens.HomeScreen
 import com.example.myapplication.OrderScreen
 import com.example.myapplication.ProfileScreen
 import com.example.myapplication.RecipientDetailScreen

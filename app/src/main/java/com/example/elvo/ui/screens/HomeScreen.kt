@@ -1,5 +1,6 @@
-package com.example.myapplication
+package com.example.elvo.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,20 +19,42 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.elvo.R
+import com.example.elvo.ui.viewmodels.PopularUIState
+import com.example.elvo.ui.viewmodels.PopularViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 @Preview
 @Composable
-fun HomeScreen() {
+fun HomeScreen(popularViewModel: PopularViewModel = hiltViewModel()) {
+    val state = popularViewModel.state
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        state.collectLatest { state ->
+            when(state){
+                is PopularUIState.Default -> {}
+                is PopularUIState.Error -> {
+                    Toast.makeText(context, state.errorResId, Toast.LENGTH_LONG).show()
+                }
+                is PopularUIState.Success -> {
+
+                }
+            }
+
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -53,7 +76,7 @@ fun HomeScreen() {
             contentPadding = PaddingValues(horizontal = 4.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(5) { index ->
+            items(10) { index ->
                 ProductCard(
                     name = "Название товара $index",
                     imageRes = R.drawable.placeholder

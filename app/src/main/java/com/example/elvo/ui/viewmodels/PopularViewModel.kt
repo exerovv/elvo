@@ -1,4 +1,4 @@
-package com.example.elvo.ui.auth.viewmodels
+package com.example.elvo.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -34,7 +34,7 @@ class PopularViewModel @Inject constructor(
                 _state.value = PopularUIState.Error(errorResId)
             }
             else{
-                _state.value =PopularUIState.Error(R.string.unknown_error)
+                _state.value = PopularUIState.Error(R.string.unknown_error)
             }
         }
     }

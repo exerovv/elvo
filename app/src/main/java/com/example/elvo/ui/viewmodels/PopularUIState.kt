@@ -1,4 +1,4 @@
-package com.example.elvo.ui.auth.viewmodels
+package com.example.elvo.ui.viewmodels
 
 import com.example.elvo.domain.model.popular.PopularItem
 

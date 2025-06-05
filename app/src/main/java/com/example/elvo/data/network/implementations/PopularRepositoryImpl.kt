@@ -14,7 +14,7 @@ class PopularRepositoryImpl @Inject constructor(
     override suspend fun fetchPopularItems(): PopularResult {
         try{
             val result = popularService.fetchPopularItems()
-            return PopularResult.Success(result.popularItemList.toDomain())
+            return PopularResult.Success(result.toDomain())
         }catch (e: HttpException){
             val errorBody = e.response()?.errorBody()?.string()
             val error = ErrorParser.parseError(errorBody)

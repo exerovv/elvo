@@ -1,10 +1,10 @@
 package com.example.elvo.data.network.converters
 
 import com.example.elvo.data.network.models.ErrorDTO
-import com.example.elvo.data.network.models.TokenDTO
+import com.example.elvo.data.network.models.auth.TokenDTO
 import com.example.elvo.domain.enums.ErrorCodes
 import com.example.elvo.domain.model.Error
-import com.example.elvo.domain.model.Token
+import com.example.elvo.domain.model.auth.Token
 
 fun TokenDTO.toDomain(): Token {
     return Token(

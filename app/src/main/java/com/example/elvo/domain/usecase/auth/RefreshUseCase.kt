@@ -1,8 +1,8 @@
-package com.example.elvo.domain.usecase
+package com.example.elvo.domain.usecase.auth
 
 import com.example.elvo.domain.enums.ErrorCodes
-import com.example.elvo.domain.model.AuthResult
-import com.example.elvo.domain.model.AuthState
+import com.example.elvo.domain.model.auth.AuthResult
+import com.example.elvo.domain.model.auth.AuthState
 import com.example.elvo.domain.model.Error
 import com.example.elvo.domain.repositories.AuthRepository
 import com.example.elvo.domain.repositories.DataStoreRepository

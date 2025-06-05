@@ -1,13 +1,12 @@
 package com.example.elvo.data.network.implementations
 
 import com.example.elvo.data.network.converters.toDomain
-import com.example.elvo.data.network.models.AuthRequest
-import com.example.elvo.data.network.models.ErrorDTO
-import com.example.elvo.data.network.models.RefreshRequest
+import com.example.elvo.data.network.models.auth.AuthRequest
+import com.example.elvo.data.network.models.auth.RefreshRequest
 import com.example.elvo.data.network.services.AuthService
-import com.example.elvo.domain.model.AuthResult
+import com.example.elvo.domain.model.auth.AuthResult
 import com.example.elvo.domain.repositories.AuthRepository
-import com.squareup.moshi.Moshi
+import com.example.elvo.data.utils.ErrorParser
 import javax.inject.Inject
 
 
@@ -25,7 +24,7 @@ class AuthRepositoryImpl @Inject constructor(
             AuthResult.Success(response.toDomain())
         } catch (e: retrofit2.HttpException) {
             val errorBody = e.response()?.errorBody()?.string()
-            val errorCode = parseError(errorBody)
+            val errorCode = ErrorParser.parseError(errorBody)
             AuthResult.Failure(errorCode.toDomain())
         }
     }
@@ -42,7 +41,7 @@ class AuthRepositoryImpl @Inject constructor(
             AuthResult.Success(response.toDomain())
         } catch (e: retrofit2.HttpException) {
             val errorBody = e.response()?.errorBody()?.string()
-            val errorCode = parseError(errorBody)
+            val errorCode = ErrorParser.parseError(errorBody)
             AuthResult.Failure(errorCode.toDomain())
         }
     }
@@ -57,22 +56,8 @@ class AuthRepositoryImpl @Inject constructor(
             AuthResult.Success(response.toDomain())
         }catch (e: retrofit2.HttpException) {
             val errorBody = e.response()?.errorBody()?.string()
-            val errorCode = parseError(errorBody)
+            val errorCode = ErrorParser.parseError(errorBody)
             AuthResult.Failure(errorCode.toDomain())
-        }
-    }
-
-    private fun parseError(errorBody: String?): ErrorDTO {
-        return try {
-            if (errorBody.isNullOrEmpty()) {
-                ErrorDTO()
-            } else {
-                val moshi = Moshi.Builder().build()
-                val errorDto = moshi.adapter(ErrorDTO::class.java).fromJson(errorBody) ?: ErrorDTO()
-                errorDto
-            }
-        } catch (e: Exception) {
-            ErrorDTO()
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.elvo.di
 
 import com.example.elvo.data.network.services.AuthService
+import com.example.elvo.data.network.services.PopularService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,6 +26,12 @@ object NetworkModule {
     @Singleton
     fun provideAuthService(retrofit: Retrofit): AuthService{
         return retrofit.create(AuthService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providePopularService(retrofit: Retrofit): PopularService{
+        return retrofit.create(PopularService::class.java)
     }
 }
 

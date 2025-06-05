@@ -1,4 +1,6 @@
-package com.example.elvo.domain.model
+package com.example.elvo.domain.model.auth
+
+import com.example.elvo.domain.model.Error
 
 
 sealed class AuthState {

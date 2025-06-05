@@ -1,8 +1,8 @@
 package com.example.elvo.data.network.services
 
-import com.example.elvo.data.network.models.AuthRequest
-import com.example.elvo.data.network.models.RefreshRequest
-import com.example.elvo.data.network.models.TokenDTO
+import com.example.elvo.data.network.models.auth.AuthRequest
+import com.example.elvo.data.network.models.auth.RefreshRequest
+import com.example.elvo.data.network.models.auth.TokenDTO
 import retrofit2.http.Body
 import retrofit2.http.POST
 

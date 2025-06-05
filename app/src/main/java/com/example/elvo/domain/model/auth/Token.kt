@@ -1,4 +1,4 @@
-package com.example.elvo.domain.model
+package com.example.elvo.domain.model.auth
 
 data class Token(
     val accessToken: String,

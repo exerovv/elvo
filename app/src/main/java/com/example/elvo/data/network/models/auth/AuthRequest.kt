@@ -1,4 +1,4 @@
-package com.example.elvo.data.network.models
+package com.example.elvo.data.network.models.auth
 
 import com.squareup.moshi.JsonClass
 

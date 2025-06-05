@@ -4,10 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.elvo.R
 import com.example.elvo.domain.enums.ErrorCodes
-import com.example.elvo.domain.model.AuthState
-import com.example.elvo.domain.usecase.LoginUseCase
-import com.example.elvo.domain.usecase.RefreshUseCase
-import com.example.elvo.domain.usecase.RegisterUseCase
+import com.example.elvo.domain.model.auth.AuthState
+import com.example.elvo.domain.usecase.auth.LoginUseCase
+import com.example.elvo.domain.usecase.auth.RefreshUseCase
+import com.example.elvo.domain.usecase.auth.RegisterUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow

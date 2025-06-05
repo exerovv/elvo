@@ -1,5 +1,6 @@
 package com.example.elvo.data.network.converters
 
+import android.util.Log
 import com.example.elvo.data.network.models.popular.PopularItemDTO
 import com.example.elvo.domain.model.popular.PopularItem
 

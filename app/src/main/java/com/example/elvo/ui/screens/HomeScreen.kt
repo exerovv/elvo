@@ -20,6 +20,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -31,7 +33,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil3.compose.rememberAsyncImagePainter
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.example.elvo.R
+import com.example.elvo.domain.model.popular.PopularItem
 import com.example.elvo.ui.viewmodels.PopularUIState
 import com.example.elvo.ui.viewmodels.PopularViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -41,6 +47,7 @@ import kotlinx.coroutines.flow.collectLatest
 fun HomeScreen(popularViewModel: PopularViewModel = hiltViewModel()) {
     val state = popularViewModel.state
     val context = LocalContext.current
+    val popularItems = remember { mutableStateOf<List<PopularItem>>(emptyList()) }
     LaunchedEffect(Unit) {
         state.collectLatest { state ->
             when(state){
@@ -49,7 +56,7 @@ fun HomeScreen(popularViewModel: PopularViewModel = hiltViewModel()) {
                     Toast.makeText(context, state.errorResId, Toast.LENGTH_LONG).show()
                 }
                 is PopularUIState.Success -> {
-
+                    popularItems.value = state.data
                 }
             }
 
@@ -76,11 +83,9 @@ fun HomeScreen(popularViewModel: PopularViewModel = hiltViewModel()) {
             contentPadding = PaddingValues(horizontal = 4.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(10) { index ->
-                ProductCard(
-                    name = "Название товара $index",
-                    imageRes = R.drawable.placeholder
-                )
+            items(popularItems.value.size) { index ->
+                val item = popularItems.value[index]
+                ProductCard(name = item.title, imageUrl = item.url)
             }
         }
 
@@ -129,14 +134,21 @@ fun HomeScreen(popularViewModel: PopularViewModel = hiltViewModel()) {
 
 
 @Composable
-fun ProductCard(name: String, imageRes: Int) {
+fun ProductCard(name: String, imageUrl: String) {
     Column(
         modifier = Modifier
             .width(160.dp)
             .clip(RoundedCornerShape(12.dp))
     ) {
+        val painter = rememberAsyncImagePainter(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(imageUrl)
+                .crossfade(true)
+                .build()
+        )
+
         Image(
-            painter = painterResource(id = imageRes),
+            painter = painter,
             contentDescription = name,
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -144,6 +156,7 @@ fun ProductCard(name: String, imageRes: Int) {
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(12.dp))
         )
+
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = name,

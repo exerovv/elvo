@@ -5,5 +5,5 @@ import retrofit2.http.GET
 
 interface PopularService {
     @GET("popular")
-    fun fetchPopularItems(): List<PopularItemsDTO>
+    suspend fun fetchPopularItems(): PopularItemsDTO
 }

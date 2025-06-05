@@ -38,7 +38,7 @@ class RegisterUseCase @Inject constructor(
             }
             emit(AuthState.Loading)
 
-            val result = authRepository.signIn(login, password)
+            val result = authRepository.signUp(login, password)
 
             if (result is AuthResult.Failure) {
                 emit(AuthState.Failure(result.error))

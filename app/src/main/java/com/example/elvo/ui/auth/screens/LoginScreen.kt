@@ -32,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.elvo.R
 import com.example.elvo.ui.auth.viewmodels.AuthUIState
 import com.example.elvo.ui.auth.viewmodels.AuthViewModel
+import com.example.elvo.ui.theme.AppTextFieldDefaults.textFieldColors
 
 @Composable
 fun LoginScreen(onLoginSuccess: () -> Unit, onRegisterClick: () -> Unit, authViewModel: AuthViewModel = hiltViewModel()) {
@@ -70,13 +71,6 @@ fun LoginScreen(onLoginSuccess: () -> Unit, onRegisterClick: () -> Unit, authVie
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                val textFieldColors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFF0B57D0),
-                    unfocusedBorderColor = Color.Gray,
-                    cursorColor = Color(0xFF0B57D0),
-                    focusedLabelColor = Color(0xFF0B57D0),
-                    unfocusedLabelColor = Color.Gray
-                )
 
                 OutlinedTextField(
                     value = login,

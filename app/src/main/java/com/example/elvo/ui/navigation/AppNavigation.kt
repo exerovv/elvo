@@ -29,7 +29,10 @@ import com.example.elvo.ui.theme.PlusJakartaSans
 import com.example.elvo.R
 import com.example.elvo.ui.auth.screens.LoginScreen
 import com.example.elvo.ui.auth.screens.RegisterScreen
+import com.example.elvo.ui.screens.FAQScreen
+import com.example.elvo.ui.screens.OrderingAddScreen
 import com.example.elvo.ui.screens.OrderingDetailScreen
+import com.example.elvo.ui.screens.RecipientAddScreen
 import com.example.myapplication.HomeScreen
 import com.example.myapplication.OrderScreen
 import com.example.myapplication.ProfileScreen
@@ -45,6 +48,7 @@ sealed class Screen(val route: String) {
     object Profile : Screen("profile")
     object RecipientList : Screen("recipient_list")
     object RecipientDetail : Screen("recipient_detail")
+    object RecipientAdd : Screen("recipient_add")
     object OrderDetail : Screen("order_detail")
 
 }
@@ -78,7 +82,10 @@ fun AppNavigation() {
                                 "home" -> "Главная"
                                 "recipient_list" -> "Список получателей"
                                 "recipient_detail" -> "Получатель"
+                                "recipient_add" -> "Новый получатель"
                                 "order_detail" -> "Данные о заказе"
+                                "order_add" -> "Добавить заказ"
+                                "faq" -> "Часто задаваемые вопросы"
                                 else -> ""
                             },
 
@@ -211,7 +218,10 @@ fun AppNavigation() {
             composable("profile") { ProfileScreen(navController) }
             composable("recipient_list") { RecipientListScreen(navController) }
             composable("recipient_detail") { RecipientDetailScreen(navController) }
+            composable("recipient_add") { RecipientAddScreen(navController) }
             composable("order_detail") { OrderingDetailScreen(navController) }
+            composable("order_add") { OrderingAddScreen(navController) }
+            composable("faq") { FAQScreen(navController) }
         }
     }
 }

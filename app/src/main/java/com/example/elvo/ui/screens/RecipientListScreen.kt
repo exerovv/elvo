@@ -71,7 +71,7 @@ fun RecipientListScreen(navController: NavController) {
                 horizontalArrangement = Arrangement.End
             ) {
                 Button(
-                    onClick = { navController.navigate("recipient_detail")},
+                    onClick = { navController.navigate("recipient_add")},
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0B57D0)),
                     shape = RoundedCornerShape(6.dp)
                 ) {

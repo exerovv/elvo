@@ -3,11 +3,11 @@ package com.example.elvo.ui.auth.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.elvo.R
-import com.example.elvo.data.network.models.ErrorCode
+import com.example.elvo.domain.enums.ErrorCodes
 import com.example.elvo.domain.model.AuthState
 import com.example.elvo.domain.usecase.LoginUseCase
+import com.example.elvo.domain.usecase.RefreshUseCase
 import com.example.elvo.domain.usecase.RegisterUseCase
-import com.example.elvo.utils.AuthValidationResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -18,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
-    private val registerUseCase: RegisterUseCase
+    private val registerUseCase: RegisterUseCase,
+    private val refreshUseCase: RefreshUseCase
 ) : ViewModel() {
     private val _authUIState = MutableSharedFlow<AuthUIState>()
     val authUIState: SharedFlow<AuthUIState>
@@ -40,6 +41,14 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+    fun refresh(){
+        viewModelScope.launch {
+            refreshUseCase().collect{ result ->
+                emitAuthUIState(result)
+            }
+        }
+    }
+
     private suspend fun emitAuthUIState(state: AuthState){
         when(state){
             is AuthState.Loading -> {
@@ -48,42 +57,40 @@ class AuthViewModel @Inject constructor(
             is AuthState.Success -> {
                 _authUIState.emit(AuthUIState.Success)
             }
-            is AuthState.ValidationError -> {
-                when(state.authValidationResult){
-                    AuthValidationResult.InvalidLogin -> {
-                        _authUIState.emit(AuthUIState.Error(R.string.invalid_login))
-                    }
-                    AuthValidationResult.InvalidPassword -> {
-                        _authUIState.emit(AuthUIState.Error(R.string.invalid_password))
-                    }
-                    AuthValidationResult.InvalidConfirmingPassword -> {
-                        _authUIState.emit(AuthUIState.Error(R.string.invalid_confirming_password))
-                    }
-                    else -> {}
-                }
-            }
-            is AuthState.Error -> {
-                when(state.errorCode){
-                    ErrorCode.INCORRECT_CREDENTIALS -> {
+            is AuthState.Failure -> {
+                when(state.error.errorCode){
+                    ErrorCodes.INCORRECT_CREDENTIALS -> {
                         _authUIState.emit(AuthUIState.Error(R.string.incorrect_credentials))
                     }
-                    ErrorCode.SERVER_ERROR -> {
+                    ErrorCodes.SERVER_ERROR -> {
                         _authUIState.emit(AuthUIState.Error(R.string.server_error))
                     }
-                    ErrorCode.SHORT_PASSWORD -> {
+                    ErrorCodes.SHORT_PASSWORD -> {
                         _authUIState.emit(AuthUIState.Error(R.string.short_password))
                     }
-                    ErrorCode.USER_NOT_FOUND -> {
+                    ErrorCodes.USER_NOT_FOUND -> {
                         _authUIState.emit(AuthUIState.Error(R.string.user_not_found))
                     }
-                    ErrorCode.BLANK_CREDENTIALS -> {
+                    ErrorCodes.BLANK_CREDENTIALS -> {
                         _authUIState.emit(AuthUIState.Error(R.string.blank_credentials))
                     }
-                    ErrorCode.USER_ALREADY_EXISTS -> {
+                    ErrorCodes.USER_ALREADY_EXISTS -> {
                         _authUIState.emit(AuthUIState.Error(R.string.user_already_exist))
                     }
-                    ErrorCode.SESSION_EXPIRED -> {
+                    ErrorCodes.SESSION_EXPIRED -> {
                         _authUIState.emit(AuthUIState.Unauthorized)
+                    }
+                    ErrorCodes.INVALID_LOGIN -> {
+                        _authUIState.emit(AuthUIState.Error(R.string.invalid_login))
+                    }
+                    ErrorCodes.INVALID_PASSWORD -> {
+                        _authUIState.emit(AuthUIState.Error(R.string.invalid_password))
+                    }
+                    ErrorCodes.INVALID_CONFIRMING_PASSWORD -> {
+                        _authUIState.emit(AuthUIState.Error(R.string.invalid_confirming_password))
+                    }
+                    ErrorCodes.CHECK_CREDENTIALS -> {
+                        _authUIState.emit(AuthUIState.Error(R.string.check_credentials))
                     }
                     else ->{
                         _authUIState.emit(AuthUIState.UnknownError)

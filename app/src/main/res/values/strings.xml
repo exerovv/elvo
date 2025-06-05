@@ -10,4 +10,5 @@
     <string name="invalid_password">Password must be 8 characters long with at list 1 letter and 1 digit</string>
     <string name="invalid_confirming_password">The password and confirmation password must be the same</string>
     <string name="unknown_error">Unknown error</string>
+    <string name="check_credentials">Make sure you entered login and password correctly</string>
 </resources>

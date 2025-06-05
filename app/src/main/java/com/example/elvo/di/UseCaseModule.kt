@@ -3,6 +3,7 @@ package com.example.elvo.di
 import com.example.elvo.domain.repositories.AuthRepository
 import com.example.elvo.domain.repositories.DataStoreRepository
 import com.example.elvo.domain.usecase.LoginUseCase
+import com.example.elvo.domain.usecase.RefreshUseCase
 import com.example.elvo.domain.usecase.RegisterUseCase
 import dagger.Module
 import dagger.Provides
@@ -21,5 +22,10 @@ object UseCaseModule {
     @Provides
     fun provideRegisterUseCase(authRepository: AuthRepository, dataStoreRepository: DataStoreRepository): RegisterUseCase{
         return RegisterUseCase(authRepository, dataStoreRepository)
+    }
+
+    @Provides
+    fun provideRefreshUseCase(authRepository: AuthRepository, dataStoreRepository: DataStoreRepository): RefreshUseCase{
+        return RefreshUseCase(authRepository, dataStoreRepository)
     }
 }

@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -92,43 +93,60 @@ fun HomeScreen(popularViewModel: PopularViewModel = hiltViewModel()) {
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = "О компании",
+            text = "О приложении",
             style = MaterialTheme.typography.titleMedium.copy(
                 fontWeight = FontWeight.Bold
             )
         )
 
+        Spacer(modifier = Modifier.height(12.dp))
+
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.elvo_logo),
-                contentDescription = "Логотип",
+                contentDescription = "Логотип ELVO",
                 modifier = Modifier
-                    .size(80.dp)
-                    .clip(RoundedCornerShape(8.dp))
+                    .size(72.dp)
+                    .clip(RoundedCornerShape(12.dp))
             )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Column {
+                Text(
+                    text = "ELVO",
+                    style = MaterialTheme.typography.headlineSmall.copy(
+                        fontWeight = FontWeight.ExtraBold,
+                        fontSize = 26.sp
+                    )
+                )
+                Text(
+                    text = "Evolution meets Velocity",
+                    style = MaterialTheme.typography.labelLarge.copy(
+                        color = Color(0xFF0B57D0),
+                        fontSize = 14.sp
+                    )
+                )
+            }
         }
-
-        Text(
-            text = "Опыт и надёжность",
-            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold)
-        )
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        Text(
-            text = "Мы поставляем высококачественную продукцию от Poizon уже более 0 лет.",
-            style = MaterialTheme.typography.bodyMedium.copy(color = Color.Gray),
-            lineHeight = 20.sp
-        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-
+        Text(
+            text = "ELVO — это приложение, которое объединяет скорость и технологичность. Мы помогаем вам доставлять и отслеживать товары с Poizon быстро, удобно и без стресса. Наш интерфейс прост и интуитивен, а поддержка надёжна. Всё ради вашего комфорта.",
+            style = MaterialTheme.typography.bodyLarge.copy(
+                color = Color(0xFF1A1A1A),
+                lineHeight = 22.sp
+            )
+        )
 
         Spacer(modifier = Modifier.height(24.dp))
+
     }
 }
 

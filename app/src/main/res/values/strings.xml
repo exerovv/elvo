@@ -11,4 +11,10 @@
     <string name="invalid_confirming_password">The password and confirmation password must be the same</string>
     <string name="unknown_error">Unknown error</string>
     <string name="check_credentials">Make sure you entered login and password correctly</string>
+    <string name="recipient_not_found">Recipient not found</string>
+    <string name="required_field_empty">Required fields can not be empty</string>
+    <string name="incorrect_name">Incorrect name</string>
+    <string name="incorrect_phone">Wrong phone format</string>
+    <string name="incorrect_address">Incorrect address</string>
+    <string name="address_not_found">Address not found</string>
 </resources>

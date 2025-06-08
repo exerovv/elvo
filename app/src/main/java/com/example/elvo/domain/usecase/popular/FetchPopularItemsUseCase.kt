@@ -1,4 +1,4 @@
-package com.example.elvo.domain.usecase
+package com.example.elvo.domain.usecase.popular
 
 import com.example.elvo.domain.model.popular.PopularResult
 import com.example.elvo.domain.repositories.PopularRepository

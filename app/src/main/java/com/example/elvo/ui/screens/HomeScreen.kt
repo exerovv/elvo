@@ -39,8 +39,8 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.example.elvo.R
 import com.example.elvo.domain.model.popular.PopularItem
-import com.example.elvo.ui.viewmodels.PopularUIState
-import com.example.elvo.ui.viewmodels.PopularViewModel
+import com.example.elvo.ui.viewmodels.popular.PopularUIState
+import com.example.elvo.ui.viewmodels.popular.PopularViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 @Preview

@@ -7,7 +7,7 @@ import com.example.elvo.domain.model.Error
 import com.example.elvo.domain.repositories.AuthRepository
 import com.example.elvo.domain.repositories.DataStoreRepository
 import com.example.elvo.utils.AuthValidationResult
-import com.example.elvo.utils.Validator
+import com.example.elvo.utils.AuthValidator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -24,7 +24,7 @@ class RegisterUseCase @Inject constructor(
         confirmationPassword: String
     ): Flow<AuthState> {
         val state = flow {
-            val validation = Validator.registerValidation(login, password, confirmationPassword)
+            val validation = AuthValidator.registerValidation(login, password, confirmationPassword)
 
             if (validation !is AuthValidationResult.Success) {
                 val error = when (validation) {

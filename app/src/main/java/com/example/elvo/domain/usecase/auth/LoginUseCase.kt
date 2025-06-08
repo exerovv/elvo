@@ -7,7 +7,7 @@ import com.example.elvo.domain.repositories.DataStoreRepository
 import com.example.elvo.domain.model.auth.AuthState
 import com.example.elvo.domain.model.Error
 import com.example.elvo.utils.AuthValidationResult
-import com.example.elvo.utils.Validator
+import com.example.elvo.utils.AuthValidator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -20,7 +20,7 @@ class LoginUseCase @Inject constructor(
 ) {
     operator fun invoke(login: String, password: String): Flow<AuthState> {
         val state = flow {
-            val validation = Validator.loginValidation(login, password)
+            val validation = AuthValidator.loginValidation(login, password)
 
             if (validation !is AuthValidationResult.Success) {
                 val error = when (validation) {

@@ -1,6 +1,6 @@
 package com.example.elvo.utils
 
-object Validator {
+object AuthValidator {
     fun loginValidation(login: String, password: String) : AuthValidationResult{
         if (!validateLogin(login)) return AuthValidationResult.InvalidLogin
         if (!validatePassword(password)) return AuthValidationResult.InvalidPassword

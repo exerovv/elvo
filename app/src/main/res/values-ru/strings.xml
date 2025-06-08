@@ -11,4 +11,10 @@
     <string name="invalid_confirming_password">Пароль и подтверждающий пароль должны быть одинаковыми</string>
     <string name="unknown_error">Неизвестная ошибка</string>
     <string name="check_credentials">Проверьте, правильно ли вы ввели логин и пароль</string>
+    <string name="recipient_not_found">Получатель не найден</string>
+    <string name="required_field_empty">Обязательные поля не могут быть пустыми</string>
+    <string name="incorrect_name">Некорректное ФИО</string>
+    <string name="incorrect_phone">Неккорректный формат номера телефона</string>
+    <string name="incorrect_address">Некорректный адрес</string>
+    <string name="address_not_found">Адрес не найден</string>
 </resources>

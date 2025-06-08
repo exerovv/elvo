@@ -1,14 +1,13 @@
-package com.example.elvo.ui.viewmodels
+package com.example.elvo.ui.viewmodels.popular
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.elvo.R
 import com.example.elvo.domain.enums.ErrorCodes
 import com.example.elvo.domain.model.popular.PopularResult
-import com.example.elvo.domain.usecase.FetchPopularItemsUseCase
+import com.example.elvo.domain.usecase.popular.FetchPopularItemsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -23,8 +22,7 @@ class PopularViewModel @Inject constructor(
         get() = _state.asStateFlow()
     init{
         viewModelScope.launch {
-            val result = fetchPopularItemsUseCase()
-            when (result) {
+            when (val result = fetchPopularItemsUseCase()) {
                 is PopularResult.Success -> {
                     _state.value = PopularUIState.Success(result.data)
                 }
@@ -36,7 +34,6 @@ class PopularViewModel @Inject constructor(
                     }
                     _state.value = PopularUIState.Error(errorResId)
                 }
-
             }
         }
     }

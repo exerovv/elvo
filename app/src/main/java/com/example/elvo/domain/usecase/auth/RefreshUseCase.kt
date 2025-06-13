@@ -28,12 +28,13 @@ class RefreshUseCase @Inject constructor(
                 }
                 if(result is AuthResult.Success){
                     try {
-                        dataStoreRepository.clearTokens()
                         dataStoreRepository.saveTokens(
                             accessToken = result.data.accessToken,
                             refreshToken = result.data.refreshToken
                         )
                     } catch (e: Exception) {
+                        dataStoreRepository.clearTokens()
+                        dataStoreRepository.clearUserInfo()
                         emit(AuthState.Failure(Error(ErrorCodes.UNKNOWN_ERROR)))
                         return@flow
                     }

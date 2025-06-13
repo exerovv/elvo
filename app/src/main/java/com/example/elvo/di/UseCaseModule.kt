@@ -14,6 +14,7 @@ import com.example.elvo.domain.usecase.recipient.AddRecipientUseCase
 import com.example.elvo.domain.usecase.recipient.FetchRecipientListUseCase
 import com.example.elvo.domain.usecase.recipient.FetchSingleRecipientUseCase
 import com.example.elvo.domain.usecase.recipient.UpdateRecipientUseCase
+import com.example.elvo.domain.usecase.user.FetchUserInfoUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -66,5 +67,10 @@ object UseCaseModule {
     @Provides
     fun provideFetchSingleRecipientUseCase(recipientRepository: RecipientRepository): FetchSingleRecipientUseCase{
         return FetchSingleRecipientUseCase(recipientRepository)
+    }
+
+    @Provides
+    fun provideFetchUserInfoUseCase(dataStoreRepository: DataStoreRepository): FetchUserInfoUseCase{
+        return FetchUserInfoUseCase(dataStoreRepository)
     }
 }

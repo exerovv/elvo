@@ -1,11 +1,16 @@
 package com.example.elvo.data.network.converters
 
-import com.example.elvo.data.network.models.auth.TokenDTO
-import com.example.elvo.domain.model.auth.Token
+import com.example.elvo.data.network.models.auth.AuthResponseDTO
+import com.example.elvo.data.network.models.auth.UserInfoDTO
+import com.example.elvo.domain.model.auth.AuthResponse
+import com.example.elvo.domain.model.user.UserInfo
 
-fun TokenDTO.toDomain(): Token {
-    return Token(
+fun AuthResponseDTO.toDomain(): AuthResponse {
+    return AuthResponse(
         accessToken = this.accessToken,
-        refreshToken = this.refreshToken
+        refreshToken = this.refreshToken,
+        userInfo = this.userInfoDTO?.toDomain()
     )
 }
+
+fun UserInfoDTO.toDomain() = UserInfo(this.userId, this.username, this.avatarUrl)

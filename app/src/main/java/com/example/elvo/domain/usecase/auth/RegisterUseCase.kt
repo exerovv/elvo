@@ -51,6 +51,11 @@ class RegisterUseCase @Inject constructor(
                         accessToken = result.data.accessToken,
                         refreshToken = result.data.refreshToken
                     )
+                    if (result.data.userInfo != null) {
+                        dataStoreRepository.saveUserInfo(
+                            result.data.userInfo
+                        )
+                    }
                 } catch (e: Exception) {
                     emit(AuthState.Failure(Error(ErrorCodes.UNKNOWN_ERROR)))
                     return@flow

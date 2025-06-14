@@ -48,30 +48,14 @@ class RecipientViewModel @Inject constructor(
         get() = _updateState.asSharedFlow()
 
     init {
-        viewModelScope.launch {
-            when (val result = fetchRecipientListUseCase()) {
-                is RecipientResult.Success<List<RecipientShort>> -> _listState.value =
-                    RecipientListUIState.Success(result.data!!)
-                is RecipientResult.Failure -> {
-                    if (result.error.errorCode == ErrorCodes.UNAUTHORIZED) {
-                        _listState.value = RecipientListUIState.Unauthorized
-                        Log.d("RecipientViewModel", "UNAUTHORIZED")
-                        return@launch
-                    }
-                    val errorResId = when (result.error.errorCode) {
-                        ErrorCodes.SERVER_ERROR -> R.string.server_error
-                        else -> R.string.unknown_error
-                    }
-                    _listState.value = RecipientListUIState.Error(errorResId)
-                }
-
-            }
-        }
+        fetchRecipients()
     }
 
     suspend fun addRecipient(recipient: Recipient) {
         when (val result = addRecipientUseCase(recipient)) {
-            is RecipientResult.Success -> _addState.emit(RecipientAddUIState.Success)
+            is RecipientResult.Success -> {
+                _addState.emit(RecipientAddUIState.Success)
+            }
             is RecipientResult.Failure -> {
                 if (result.error.errorCode == ErrorCodes.REQUIRED_FIELD_EMPTY) {
                     _addState.emit(RecipientAddUIState.RequiredFieldsAreEmpty)
@@ -139,6 +123,26 @@ class RecipientViewModel @Inject constructor(
                 _singleRecipientState.value = SingleRecipientUIState.Error(errorResId)
             }
 
+        }
+    }
+
+    fun fetchRecipients() {
+        viewModelScope.launch {
+            when (val result = fetchRecipientListUseCase()) {
+                is RecipientResult.Success<List<RecipientShort>> -> _listState.value =
+                    RecipientListUIState.Success(result.data!!)
+                is RecipientResult.Failure -> {
+                    if (result.error.errorCode == ErrorCodes.UNAUTHORIZED) {
+                        _listState.value = RecipientListUIState.Unauthorized
+                        return@launch
+                    }
+                    val errorResId = when (result.error.errorCode) {
+                        ErrorCodes.SERVER_ERROR -> R.string.server_error
+                        else -> R.string.unknown_error
+                    }
+                    _listState.value = RecipientListUIState.Error(errorResId)
+                }
+            }
         }
     }
 

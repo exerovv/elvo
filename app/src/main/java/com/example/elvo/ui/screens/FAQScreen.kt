@@ -1,9 +1,11 @@
 package com.example.elvo.ui.screens
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,6 +29,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,23 +39,41 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.elvo.R
+import com.example.elvo.domain.model.faq.Faq
+import com.example.elvo.domain.model.popular.PopularItem
+import com.example.elvo.ui.viewmodels.faq.FaqUIState
+import com.example.elvo.ui.viewmodels.faq.FaqViewModel
+import com.example.elvo.ui.viewmodels.popular.PopularUIState
+import com.example.elvo.ui.viewmodels.popular.PopularViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 
 @Composable
-fun FAQScreen(navController: NavController) {
-    val faqList = listOf(
-        "Как сделать заказ?" to "Вы можете оформить заказ через корзину или связавшись с менеджером.",
-        "Сколько длится доставка?" to "Доставка занимает от 15 до 30 рабочих дней в зависимости от региона.",
-        "Можно ли вернуть товар?" to "Да, возврат возможен в течение 10 дней при сохранении товарного вида.",
-        "Какие способы оплаты доступны?" to "Доступны оплата картой, через СБП и наложенным платежом при получении.",
-        "Как отследить заказ?" to "После оформления заказа вы получите трек-номер для отслеживания."
-    )
+fun FAQScreen(navController: NavController, faqViewModel: FaqViewModel = hiltViewModel()) {
+    val state = faqViewModel.state
+    val context = LocalContext.current
+    val faqItems = remember { mutableStateOf<List<Faq>>(emptyList()) }
+    LaunchedEffect(Unit) {
+        state.collectLatest { state ->
+            when(state){
+                is FaqUIState.Default -> {}
+                is FaqUIState.Error -> {
+                    Toast.makeText(context, state.errorResId, Toast.LENGTH_LONG).show()
+                }
+                is FaqUIState.Success -> {
+                    faqItems.value = state.data
+                }
+            }
 
+        }
+    }
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color(0xFFF7FAFC)
@@ -63,9 +84,9 @@ fun FAQScreen(navController: NavController) {
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-
-            items(faqList) { (question, answer) ->
-                ExpandableFAQItem(question = question, answer = answer)
+            items(faqItems.value.size) { index ->
+                val item = faqItems.value[index]
+                ExpandableFAQItem(question =  item.question, answer =  item.answer)
             }
         }
     }
@@ -75,6 +96,7 @@ fun FAQScreen(navController: NavController) {
 @Composable
 fun ExpandableFAQItem(question: String, answer: String) {
     var expanded by remember { mutableStateOf(false) }
+    val interactionSource = remember { MutableInteractionSource() }
 
     Column(
         modifier = Modifier
@@ -86,17 +108,26 @@ fun ExpandableFAQItem(question: String, answer: String) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { expanded = !expanded },
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = null
+                ) {
+                    expanded = !expanded
+                },
+            verticalAlignment = Alignment.Top
         ) {
             Text(
                 text = question,
-                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold)
+                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
+                modifier = Modifier.weight(1f)
             )
             Text(
                 text = if (expanded) "–" else "+",
-                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                modifier = Modifier
+                    .padding(start = 8.dp)
+                    .width(24.dp)
+
             )
         }
 

@@ -179,7 +179,8 @@ fun ProductCard(name: String, imageUrl: String) {
         Text(
             text = name,
             style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(horizontal = 8.dp)
+            modifier = Modifier.padding(horizontal = 8.dp),
+            minLines = 2
         )
         Spacer(modifier = Modifier.height(8.dp))
     }

@@ -10,13 +10,13 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface RecipientService {
-    @POST("add")
+    @POST("recipient/add")
     suspend fun addRecipient(@Body recipientRequest: RecipientRequest)
 
-    @GET("get")
+    @GET("recipient/get")
     suspend fun fetchRecipientList(): List<RecipientShortDTO>
 
-    @GET("get/{id}")
+    @GET("recipient/get/{id}")
     suspend fun fetchSingleRecipient(@Path("id") id: Int): RecipientFullDTO
 
     @PUT("update/{id}")

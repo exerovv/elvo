@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.elvo.R
@@ -88,6 +89,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit, onRegisterClick: () -> Unit, authVie
                     onValueChange = {password = it },
                     label = { Text("Пароль") },
                     modifier = Modifier.fillMaxWidth(),
+                    visualTransformation = PasswordVisualTransformation(),
                     colors = textFieldColors
 
                     )

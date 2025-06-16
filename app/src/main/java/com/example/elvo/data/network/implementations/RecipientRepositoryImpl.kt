@@ -33,7 +33,7 @@ class RecipientRepositoryImpl @Inject constructor(
         }catch (e: HttpException){
             val errorBody = e.response()?.errorBody()?.string()
             val error = ErrorParser.parseError(errorBody)
-            return RecipientResult.Failure(error.toDomain())
+            RecipientResult.Failure(error.toDomain())
         }
     }
 
@@ -44,7 +44,7 @@ class RecipientRepositoryImpl @Inject constructor(
         }catch (e: HttpException){
             val errorBody = e.response()?.errorBody()?.string()
             val error = ErrorParser.parseError(errorBody)
-            return RecipientResult.Failure(error.toDomain())
+            RecipientResult.Failure(error.toDomain())
         }
     }
 
@@ -55,7 +55,7 @@ class RecipientRepositoryImpl @Inject constructor(
         }catch (e: HttpException){
             val errorBody = e.response()?.errorBody()?.string()
             val error = ErrorParser.parseError(errorBody)
-            return RecipientResult.Failure(error.toDomain())
+            RecipientResult.Failure(error.toDomain())
         }
     }
 
@@ -66,7 +66,7 @@ class RecipientRepositoryImpl @Inject constructor(
         }catch (e: HttpException){
             val errorBody = e.response()?.errorBody()?.string()
             val error = ErrorParser.parseError(errorBody)
-            return RecipientResult.Failure(error.toDomain())
+            RecipientResult.Failure(error.toDomain())
         }
     }
 }

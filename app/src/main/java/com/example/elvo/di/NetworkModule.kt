@@ -2,6 +2,7 @@ package com.example.elvo.di
 
 import com.example.elvo.data.network.services.AuthService
 import com.example.elvo.data.network.services.FaqService
+import com.example.elvo.data.network.services.OrderService
 import com.example.elvo.data.network.services.PopularService
 import com.example.elvo.data.network.services.RecipientService
 import com.example.elvo.data.utils.AuthInterceptor
@@ -72,6 +73,12 @@ object NetworkModule {
     @Singleton
     fun provideRecipientService(@Named("Authenticated") retrofit: Retrofit): RecipientService{
         return retrofit.create(RecipientService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOrderService(@Named("Authenticated") retrofit: Retrofit): OrderService{
+        return retrofit.create(OrderService::class.java)
     }
 
 }

@@ -1,6 +1,5 @@
 package com.example.elvo.ui.viewmodels.recipient
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.elvo.R
@@ -13,7 +12,6 @@ import com.example.elvo.domain.usecase.recipient.AddRecipientUseCase
 import com.example.elvo.domain.usecase.recipient.FetchRecipientListUseCase
 import com.example.elvo.domain.usecase.recipient.FetchSingleRecipientUseCase
 import com.example.elvo.domain.usecase.recipient.UpdateRecipientUseCase
-import com.example.elvo.utils.FieldValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -48,7 +46,9 @@ class RecipientViewModel @Inject constructor(
         get() = _updateState.asSharedFlow()
 
     init {
-        fetchRecipients()
+        viewModelScope.launch {
+            fetchRecipients()
+        }
     }
 
     suspend fun addRecipient(recipient: Recipient) {
@@ -126,27 +126,21 @@ class RecipientViewModel @Inject constructor(
         }
     }
 
-    fun fetchRecipients() {
-        viewModelScope.launch {
-            when (val result = fetchRecipientListUseCase()) {
-                is RecipientResult.Success<List<RecipientShort>> -> _listState.value =
-                    RecipientListUIState.Success(result.data!!)
-                is RecipientResult.Failure -> {
-                    if (result.error.errorCode == ErrorCodes.UNAUTHORIZED) {
-                        _listState.value = RecipientListUIState.Unauthorized
-                        return@launch
-                    }
-                    val errorResId = when (result.error.errorCode) {
-                        ErrorCodes.SERVER_ERROR -> R.string.server_error
-                        else -> R.string.unknown_error
-                    }
-                    _listState.value = RecipientListUIState.Error(errorResId)
+    suspend fun fetchRecipients() {
+        when (val result = fetchRecipientListUseCase()) {
+            is RecipientResult.Success<List<RecipientShort>> -> _listState.value =
+                RecipientListUIState.Success(result.data!!)
+            is RecipientResult.Failure -> {
+                if (result.error.errorCode == ErrorCodes.UNAUTHORIZED) {
+                    _listState.value = RecipientListUIState.Unauthorized
+                    return
                 }
+                val errorResId = when (result.error.errorCode) {
+                    ErrorCodes.SERVER_ERROR -> R.string.server_error
+                    else -> R.string.unknown_error
+                }
+                _listState.value = RecipientListUIState.Error(errorResId)
             }
         }
-    }
-
-    fun validateBeforeExit(recipient: Recipient){
-        FieldValidator.validateRequiredFields(recipient)
     }
 }

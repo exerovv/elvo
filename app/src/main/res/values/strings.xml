@@ -18,4 +18,7 @@
     <string name="incorrect_address">Incorrect address</string>
     <string name="address_not_found">Address not found</string>
     <string name="user_info_loading_error">Error while loading user data</string>
+    <string name="incorrect_link">Incorrect link</string>
+    <string name="incorrect_order_info">Incorrect order info</string>
+    <string name="order_not_found">Order not found</string>
 </resources>

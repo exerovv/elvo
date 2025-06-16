@@ -16,7 +16,16 @@ fun RecipientFullDTO.toDomain(): RecipientFull{
     return RecipientFull(
         this.fullName,
         this.phone,
-        this.address
+        this.address,
+        this.name,
+        this.surname,
+        this.patronymic,
+        this.city,
+        this.street,
+        this.house,
+        this.building,
+        this.flat,
+        this.floor
     )
 }
 

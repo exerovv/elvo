@@ -2,7 +2,7 @@ package com.example.elvo.utils
 
 import com.example.elvo.domain.model.recipient.Recipient
 
-object FieldValidator {
+object RecipientValidator {
     fun validateRequiredFields(
         recipient: Recipient
     ): Boolean {

@@ -18,4 +18,7 @@
     <string name="incorrect_address">Некорректный адрес</string>
     <string name="address_not_found">Адрес не найден</string>
     <string name="user_info_loading_error">Ошибка при загрузке пользовательских данных</string>
+    <string name="incorrect_link">Неправильная ссылка</string>
+    <string name="incorrect_order_info">Некорректная информация о заказе</string>
+    <string name="order_not_found">Заказ не найден</string>
 </resources>

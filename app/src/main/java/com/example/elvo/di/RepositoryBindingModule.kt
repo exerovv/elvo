@@ -3,11 +3,13 @@ package com.example.elvo.di
 import com.example.elvo.data.network.implementations.AuthRepositoryImpl
 import com.example.elvo.data.network.implementations.DataStoreRepositoryImpl
 import com.example.elvo.data.network.implementations.FaqRepositoryImpl
+import com.example.elvo.data.network.implementations.OrderRepositoryImpl
 import com.example.elvo.data.network.implementations.PopularRepositoryImpl
 import com.example.elvo.data.network.implementations.RecipientRepositoryImpl
 import com.example.elvo.domain.repositories.AuthRepository
 import com.example.elvo.domain.repositories.DataStoreRepository
 import com.example.elvo.domain.repositories.FaqRepository
+import com.example.elvo.domain.repositories.OrderRepository
 import com.example.elvo.domain.repositories.PopularRepository
 import com.example.elvo.domain.repositories.RecipientRepository
 import dagger.Binds
@@ -32,4 +34,7 @@ abstract class RepositoryBindingModule {
 
     @Binds
     abstract fun bindRecipientRepository(recipientRepositoryImpl: RecipientRepositoryImpl): RecipientRepository
+
+    @Binds
+    abstract fun bindOrderRepository(orderRepositoryImpl: OrderRepositoryImpl): OrderRepository
 }

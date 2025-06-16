@@ -5,7 +5,7 @@ import com.example.elvo.domain.model.Error
 import com.example.elvo.domain.model.recipient.Recipient
 import com.example.elvo.domain.model.recipient.RecipientResult
 import com.example.elvo.domain.repositories.RecipientRepository
-import com.example.elvo.utils.FieldValidator
+import com.example.elvo.utils.RecipientValidator
 import javax.inject.Inject
 
 class AddRecipientUseCase @Inject constructor(
@@ -15,7 +15,7 @@ class AddRecipientUseCase @Inject constructor(
         recipient: Recipient
     ): RecipientResult<Unit> {
         val validationResult =
-            FieldValidator.validateRequiredFields(recipient)
+            RecipientValidator.validateRequiredFields(recipient)
 
         if (!validationResult) return RecipientResult.Failure(Error(ErrorCodes.REQUIRED_FIELD_EMPTY))
 

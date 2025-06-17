@@ -22,12 +22,17 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.res.painterResource
+import androidx.navigation.NavType
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.elvo.ui.theme.PlusJakartaSans
 import com.example.elvo.R
 import com.example.elvo.ui.auth.screens.LoginScreen
 import com.example.elvo.ui.auth.screens.RegisterScreen
+import com.example.elvo.ui.screens.ConfirmExitDialog
 import com.example.elvo.ui.screens.FAQScreen
 import com.example.elvo.ui.screens.OrderingAddScreen
 import com.example.elvo.ui.screens.OrderingDetailScreen
@@ -46,9 +51,13 @@ sealed class Screen(val route: String) {
     object Orders : Screen("orders")
     object Profile : Screen("profile")
     object RecipientList : Screen("recipient_list")
-    object RecipientDetail : Screen("recipient_detail")
+    object RecipientDetail : Screen("recipient_detail/{id}") {
+        fun createRoute(id: Int) = "recipient_detail/$id"
+    }
     object RecipientAdd : Screen("recipient_add")
-    object OrderDetail : Screen("order_detail")
+    object OrderDetail : Screen("order_detail/{orderingId}") {
+        fun createRoute(orderingId: Int) = "order_detail/$orderingId"
+    }
 
 }
 
@@ -63,6 +72,9 @@ fun AppNavigation() {
 
     val showBottomBar = currentDestination in bottomBarScreens
     val showTopBar = currentDestination != "login"
+
+    val showExitDialog = remember { mutableStateOf(false) }
+    val showDialogOnBack = currentDestination in listOf("recipient_add", "order_add", "register")
 
     Scaffold(
         topBar = {
@@ -82,7 +94,8 @@ fun AppNavigation() {
                                 "recipient_list" -> "Список получателей"
                                 "recipient_detail" -> "Получатель"
                                 "recipient_add" -> "Новый получатель"
-                                "order_detail" -> "Данные о заказе"
+                                "recipient_edit" -> "Новый получатель"
+                                "order_detail/{orderingId}" -> "Данные о заказе"
                                 "order_add" -> "Добавить заказ"
                                 "faq" -> "Часто задаваемые вопросы"
                                 else -> ""
@@ -216,11 +229,32 @@ fun AppNavigation() {
             composable("orders") { OrderScreen(navController) }
             composable("profile") { ProfileScreen(navController) }
             composable("recipient_list") { RecipientListScreen(navController) }
-            composable("recipient_detail") { RecipientDetailScreen(navController) }
+            composable(
+                route = Screen.RecipientDetail.route,
+                arguments = listOf(navArgument("id") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val id = backStackEntry.arguments?.getInt("id") ?: return@composable
+                RecipientDetailScreen(navController = navController,recipientId = id)
+            }
             composable("recipient_add") { RecipientAddScreen(navController) }
-            composable("order_detail") { OrderingDetailScreen(navController) }
+            composable(
+                route = Screen.OrderDetail.route,
+                arguments = listOf(navArgument("orderingId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val orderingId = backStackEntry.arguments?.getInt("orderingId") ?: return@composable
+                OrderingDetailScreen(navController = navController, orderingId = orderingId)
+            }
             composable("order_add") { OrderingAddScreen(navController) }
             composable("faq") { FAQScreen(navController) }
         }
     }
+
+    ConfirmExitDialog(
+        visible = showExitDialog.value,
+        onConfirm = {
+            showExitDialog.value = false
+            navController.popBackStack()
+        },
+        onDismiss = { showExitDialog.value = false }
+    )
 }

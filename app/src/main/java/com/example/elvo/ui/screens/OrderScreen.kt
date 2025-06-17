@@ -2,7 +2,10 @@ package com.example.myapplication
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,28 +23,52 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import com.example.elvo.utils.toUiString
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.elvo.ui.viewmodels.order.OrderListUIState
+import com.example.elvo.ui.viewmodels.order.OrderViewModel
+import com.example.elvo.utils.PaymentStatus
 
 
 @Composable
-fun OrderScreen(navController: NavController) {
+fun OrderScreen(navController: NavController, viewModel: OrderViewModel = hiltViewModel()) {
     val tabs = listOf("Созданные", "В пути", "Завершенные")
-    var selectedTabIndex by remember { mutableStateOf(1) }
+    var selectedTabIndex by remember { mutableStateOf(0) }
+    val tabStatuses = listOf("created", "in_transit", "completed")
+
+    val listState by viewModel.listState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchOrders()
+    }
+
+    val filteredOrders = when (listState) {
+        is OrderListUIState.Success -> {
+            (listState as OrderListUIState.Success).data
+                .filter { it.globalStatus == tabStatuses[selectedTabIndex] }
+        }
+        else -> emptyList()
+    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background( Color(0xFFF7FAFC))
+            .background(Color(0xFFF7FAFC))
     ) {
-        // Tabs
         TabRow(
             selectedTabIndex = selectedTabIndex,
             containerColor = Color(0xFFF7FAFC),
@@ -67,47 +94,91 @@ fun OrderScreen(navController: NavController) {
             }
         }
 
-        // List of orders
-        val orders = listOf(
-            "1234567890" to "Заказ #1",
-            "9876543210" to "Заказ #2",
-            "1122334455" to "Заказ #3"
-        )
-
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-        ) {
-            items(orders) { (id, name) ->
-                OrderCard(orderName = name, orderId = id){navController.navigate("order_detail")}
-                Spacer(modifier = Modifier.height(12.dp))
+        when (listState) {
+            is OrderListUIState.Error -> {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text("Произошла ошибка", color = Color.Red)
+                }
+            }
+            is OrderListUIState.Unauthorized -> {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text("Не авторизован", color = Color.Gray)
+                }
+            }
+            else -> {
+                if (filteredOrders.isEmpty()) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text("Нет заказов", color = Color.Gray)
+                    }
+                } else {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp)
+                    ) {
+                        items(filteredOrders) { order ->
+                            OrderCard(
+                                orderName = order.orderName,
+                                current_status = order.currentStatus,
+                                payment_status = PaymentStatus.valueOf(order.paymentStatus).toUiString(),
+                            ) {
+                                navController.navigate("order_detail/${order.orderingId}")
+                            }
+                            Spacer(modifier = Modifier.height(12.dp))
+                        }
+                    }
+                }
             }
         }
     }
 }
 
 @Composable
-fun OrderCard(orderName: String, orderId: String, onClick: () -> Unit) {
+fun OrderCard(orderName: String, current_status: String, payment_status: String, onClick: () -> Unit) {
     Card(
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(4.dp),
-        modifier = Modifier.fillMaxWidth().clickable{ onClick() }
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             Text(
                 text = orderName,
-                style = MaterialTheme.typography.titleMedium,
-                color = Color(0xFF212121)
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                color = Color(0xFF212121),
+                modifier = Modifier.weight(1f),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
-            Text(
-                text = "Order ID: $orderId",
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color(0xFF808080)
-            )
+            Column(
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = payment_status,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color(0xFF808080),
+                    textAlign = TextAlign.End,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    text = current_status,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color(0xFF808080),
+                    textAlign = TextAlign.End,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
         }
     }
 }

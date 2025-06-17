@@ -39,7 +39,7 @@ class OrderViewModel @Inject constructor(
     private val _historyState: MutableStateFlow<OrderHistoryUIState> =
         MutableStateFlow(OrderHistoryUIState.Default)
     val historyState
-        get() = _listState.asStateFlow()
+        get() = _historyState.asStateFlow()
 
     private val _singleOrderState: MutableStateFlow<SingleOrderUIState> =
         MutableStateFlow(SingleOrderUIState.Default)

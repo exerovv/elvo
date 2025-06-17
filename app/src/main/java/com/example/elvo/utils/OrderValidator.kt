@@ -11,7 +11,7 @@ object OrderValidator {
 
     fun validateLink(
         link: String?
-    ): Boolean {
+    ): Boolean{
         val regex = """^https://dw4\.co/t/A/[a-zA-Z0-9]{9,}$""".toRegex()
         return !(link.isNullOrBlank()) && regex.matches(link)
     }

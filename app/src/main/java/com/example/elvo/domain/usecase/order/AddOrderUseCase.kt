@@ -14,7 +14,7 @@ class AddOrderUseCase @Inject constructor(private val orderRepository: OrderRepo
         val validationDataResult = OrderValidator.validateAllFields(order)
         val validationLinkResult = OrderValidator.validateLink(order.link)
         if (!validationDataResult) return OrderResult.Failure(Error(ErrorCodes.INCORRECT_ORDER_DATA))
-        if (!validationLinkResult) return OrderResult.Failure(Error(ErrorCodes.INCORRECT_LINK))
+        if (validationLinkResult) return OrderResult.Failure(Error(ErrorCodes.INCORRECT_LINK))
 
         return orderRepository.addOrder(
             order

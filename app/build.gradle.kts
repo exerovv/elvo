@@ -54,6 +54,8 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.room.common.jvm)
+    implementation(libs.androidx.room.runtime.android)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -89,5 +91,5 @@ dependencies {
     //EncryptedDataStore
     implementation(libs.security.crypto.datastore.preferences)
 
-    //KotlinxSerialization
+    ksp(libs.androidx.room.compiler)
 }

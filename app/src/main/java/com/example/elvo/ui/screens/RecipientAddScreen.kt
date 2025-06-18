@@ -272,12 +272,12 @@ fun RecipientAddScreen(navController: NavController, recipientViewModel: Recipie
                     val recipient = Recipient(
                         name = name,
                         surname = surname,
-                        patronymic = patronymic,
+                        patronymic = patronymic.ifBlank { null },
                         phone = phone,
                         city = city,
                         street = street,
                         house = house.toInt(),
-                        building = building,
+                        building = building.ifBlank { null },
                         flat = flat.toInt(),
                         floor = floor.toInt()
                     )

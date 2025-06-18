@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -84,14 +83,14 @@ fun RecipientEditScreen(
                 val recipient = state.data
                 name = recipient.name
                 surname = recipient.surname
-                patronymic = recipient.patronymic ?: ""
+                patronymic = recipient.patronymic
                 hasNoMiddleName = recipient.patronymic.isBlank()
                 city = recipient.city
                 street = recipient.street
                 house = recipient.house.toString()
                 building = recipient.building ?: ""
-                flat = (recipient.flat ?: "").toString()
-                floor = (recipient.floor ?: "").toString()
+                flat = recipient.flat.toString()
+                floor = recipient.floor.toString()
                 phone = recipient.phone
                 oldRecipient = Recipient(
                     name = name,

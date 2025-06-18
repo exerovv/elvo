@@ -125,9 +125,7 @@ fun RecipientEditScreen(
                 }
                 is RecipientUpdateUIState.Unauthorized -> {
                     Toast.makeText(context, "Неавторизованный доступ", Toast.LENGTH_SHORT).show()
-                    navController.navigate(Screen.Login.route) {
-                        popUpTo(0) { inclusive = true }
-                    }
+                    navController.navigate(Screen.Login.route) {                  }
                 }
                 else -> {}
             }

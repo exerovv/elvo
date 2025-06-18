@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil3.compose.rememberAsyncImagePainter
+import com.example.elvo.ui.navigation.Screen
 import com.example.elvo.ui.viewmodels.order.OrderHistoryUIState
 import com.example.elvo.ui.viewmodels.order.OrderViewModel
 import com.example.elvo.ui.viewmodels.order.SingleOrderUIState
@@ -120,7 +121,8 @@ fun OrderingDetailScreen(
                 }
 
                 is SingleOrderUIState.Unauthorized -> {
-                    Text("Неавторизован")
+                    navController.navigate(Screen.Login.route) {
+                    }
                 }
 
                 else -> {

@@ -103,7 +103,6 @@ fun OrderScreen(navController: NavController, viewModel: OrderViewModel = hiltVi
             }
             is OrderListUIState.Unauthorized -> {
                 navController.navigate(Screen.Login.route) {
-                    popUpTo(0) { inclusive = true }
                 }
             }
             else -> {

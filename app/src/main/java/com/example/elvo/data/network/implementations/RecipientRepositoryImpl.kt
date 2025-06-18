@@ -41,10 +41,10 @@ class RecipientRepositoryImpl @Inject constructor(
     }
 
     override suspend fun fetchRecipientList(): RecipientResult<List<RecipientShort>> {
-        return try {
+        return try{
             val result = recipientService.fetchRecipientList()
             RecipientResult.Success(result.toDomain())
-        } catch (e: HttpException) {
+        }catch (e: HttpException){
             val errorBody = e.response()?.errorBody()?.string()
             val error = ErrorParser.parseError(errorBody)
             RecipientResult.Failure(error.toDomain())
@@ -52,10 +52,10 @@ class RecipientRepositoryImpl @Inject constructor(
     }
 
     override suspend fun fetchSingleRecipient(id: Int): RecipientResult<RecipientFull> {
-        return try {
+        return try{
             val result = recipientService.fetchSingleRecipient(id)
             RecipientResult.Success(result.toDomain())
-        } catch (e: HttpException) {
+        }catch (e: HttpException){
             val errorBody = e.response()?.errorBody()?.string()
             val error = ErrorParser.parseError(errorBody)
             RecipientResult.Failure(error.toDomain())
@@ -69,16 +69,16 @@ class RecipientRepositoryImpl @Inject constructor(
         return try {
             val result = recipientService.updateRecipient(
                 UpdateRecipientRequest(
-                    updateRequest.name,
-                    updateRequest.surname,
-                    updateRequest.patronymic,
-                    updateRequest.phone,
-                    updateRequest.city,
-                    updateRequest.street?.toInt(),
-                    updateRequest.house,
-                    updateRequest.building?.toInt(),
-                    updateRequest.flat?.toInt(),
-                    updateRequest.floor
+                    name = updateRequest.name,
+                    surname = updateRequest.surname,
+                    patronymic = updateRequest.patronymic,
+                    phone = updateRequest.phone,
+                    city = updateRequest.city,
+                    street = updateRequest.street,
+                    house = updateRequest.house,
+                    building = updateRequest.building,
+                    flat = updateRequest.flat,
+                    floor = updateRequest.floor
                 ), id
             )
             RecipientResult.Success(result.updatedRecipient?.toDomain())

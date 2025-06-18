@@ -34,12 +34,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil3.compose.rememberAsyncImagePainter
+import com.example.elvo.ui.navigation.Screen
 import com.example.elvo.ui.viewmodels.order.OrderHistoryUIState
 import com.example.elvo.ui.viewmodels.order.OrderViewModel
 import com.example.elvo.ui.viewmodels.order.SingleOrderUIState
@@ -119,7 +121,8 @@ fun OrderingDetailScreen(
                 }
 
                 is SingleOrderUIState.Unauthorized -> {
-                    Text("Неавторизован")
+                    navController.navigate(Screen.Login.route) {
+                    }
                 }
 
                 else -> {
@@ -152,6 +155,7 @@ fun OrderingDetailScreen(
                                     Image(
                                         painter = rememberAsyncImagePainter(status.icon),
                                         contentDescription = "icon",
+                                        contentScale = ContentScale.Fit,
                                         modifier = Modifier
                                             .size(36.dp)
                                             .clip(CircleShape)

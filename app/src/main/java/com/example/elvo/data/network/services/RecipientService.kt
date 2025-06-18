@@ -21,6 +21,6 @@ interface RecipientService {
     @GET("recipient/get/{id}")
     suspend fun fetchSingleRecipient(@Path("id") id: Int): RecipientFullDTO
 
-    @PUT("update/{id}")
+    @PUT("recipient/update/{id}")
     suspend fun updateRecipient(@Body updateRequest: UpdateRecipientRequest, @Path("id") id: Int): UpdatedRecipientDTO
 }

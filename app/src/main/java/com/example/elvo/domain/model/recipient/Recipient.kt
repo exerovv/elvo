@@ -7,8 +7,8 @@ data class Recipient(
     val phone: String? = null,
     val city: String? = null,
     val street: String? = null,
-    val house: String? = null,
+    val house: Int? = null,
     val building: String? = null,
-    val flat: String? = null,
-    val floor: String? = null
+    val flat: Int? = null,
+    val floor: Int? = null
 )

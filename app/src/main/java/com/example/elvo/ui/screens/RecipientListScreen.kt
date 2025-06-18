@@ -66,6 +66,8 @@ fun RecipientListScreen(navController: NavController, recipientViewModel: Recipi
                     Toast
                         .makeText(context, "Вы не авторизованы", Toast.LENGTH_LONG)
                         .show()
+                    navController.navigate(Screen.Login.route) {
+                    }
                 }
             }
         }

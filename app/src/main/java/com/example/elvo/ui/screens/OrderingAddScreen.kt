@@ -39,6 +39,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.elvo.domain.model.order.Order
 import com.example.elvo.domain.model.recipient.RecipientShort
+import com.example.elvo.ui.navigation.Screen
 import com.example.elvo.ui.theme.AppTextFieldDefaults.textFieldColors
 import com.example.elvo.ui.viewmodels.order.OrderAddUIState
 import com.example.elvo.ui.viewmodels.order.OrderViewModel
@@ -80,6 +81,8 @@ fun OrderingAddScreen(navController: NavController,
             }
             is RecipientListUIState.Unauthorized -> {
                 Toast.makeText(context, "Неавторизованный доступ", Toast.LENGTH_SHORT).show()
+                navController.navigate(Screen.Login.route) {
+                }
             }
             else -> {}
         }

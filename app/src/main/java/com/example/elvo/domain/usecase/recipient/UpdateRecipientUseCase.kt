@@ -3,6 +3,7 @@ package com.example.elvo.domain.usecase.recipient
 import com.example.elvo.domain.enums.ErrorCodes
 import com.example.elvo.domain.model.Error
 import com.example.elvo.domain.model.recipient.Recipient
+import com.example.elvo.domain.model.recipient.RecipientFull
 import com.example.elvo.domain.model.recipient.RecipientResult
 import com.example.elvo.domain.model.recipient.RecipientShort
 import com.example.elvo.domain.repositories.RecipientRepository

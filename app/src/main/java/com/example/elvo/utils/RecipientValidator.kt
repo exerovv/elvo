@@ -11,9 +11,9 @@ object RecipientValidator {
                 recipient.phone.isNullOrBlank() ||
                 recipient.city.isNullOrBlank() ||
                 recipient.street.isNullOrBlank() ||
-                recipient.house.isNullOrEmpty() ||
-                recipient.flat.isNullOrEmpty() ||
-                recipient.floor.isNullOrEmpty())
+                recipient.house == null ||
+                recipient.flat == null ||
+                recipient.floor == null )
     }
 
     fun fieldsChanged(

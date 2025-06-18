@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil3.compose.rememberAsyncImagePainter
+import com.example.elvo.ui.navigation.Screen
 import com.example.elvo.ui.viewmodels.user.UserUIState
 import com.example.elvo.ui.viewmodels.user.UserViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -47,7 +48,6 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun ProfileScreen(navController: NavController,  viewModel: UserViewModel = hiltViewModel()) {
 
-    val context = LocalContext.current
 
     val username = remember { mutableStateOf("Пользователь") }
     val avatarUrl = remember { mutableStateOf<String?>(null) }
@@ -61,9 +61,8 @@ fun ProfileScreen(navController: NavController,  viewModel: UserViewModel = hilt
                 }
 
                 is UserUIState.Error -> {
-                    Toast
-                        .makeText(context, context.getString(state.errorResId), Toast.LENGTH_LONG)
-                        .show()
+                    navController.navigate(Screen.Login.route) {
+                    }
                 }
 
                 else -> Unit

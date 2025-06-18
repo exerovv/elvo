@@ -41,21 +41,23 @@ import com.example.elvo.ui.screens.HomeScreen
 import com.example.elvo.ui.screens.OrderScreen
 import com.example.elvo.ui.screens.ProfileScreen
 import com.example.elvo.ui.screens.RecipientDetailScreen
+import com.example.elvo.ui.screens.RecipientEditScreen
 import com.example.elvo.ui.screens.RecipientListScreen
 
 
 sealed class Screen(val route: String) {
-    data object Login : Screen("login")
-    data object Register : Screen("register")
-    data object Home : Screen("home")
-    data object Orders : Screen("orders")
-    data object Profile : Screen("profile")
-    data object RecipientList : Screen("recipient_list")
-    data object RecipientDetail : Screen("recipient_detail/{id}") {
+    object Login : Screen("login")
+    object Register : Screen("register")
+    object Home : Screen("home")
+    object Orders : Screen("orders")
+    object Profile : Screen("profile")
+    object RecipientList : Screen("recipient_list")
+    object RecipientEdit : Screen("recipient_edit/{id}")
+    object RecipientDetail : Screen("recipient_detail/{id}") {
         fun createRoute(id: Int) = "recipient_detail/$id"
     }
-    data object RecipientAdd : Screen("recipient_add")
-    data object OrderDetail : Screen("order_detail/{orderingId}") {
+    object RecipientAdd : Screen("recipient_add")
+    object OrderDetail : Screen("order_detail/{orderingId}") {
         fun createRoute(orderingId: Int) = "order_detail/$orderingId"
     }
 
@@ -94,7 +96,7 @@ fun AppNavigation() {
                                 "recipient_list" -> "Список получателей"
                                 "recipient_detail" -> "Получатель"
                                 "recipient_add" -> "Новый получатель"
-                                "recipient_edit" -> "Новый получатель"
+                                "recipient_edit/{id}" -> "Редактирование"
                                 "order_detail/{orderingId}" -> "Данные о заказе"
                                 "order_add" -> "Добавить заказ"
                                 "faq" -> "Часто задаваемые вопросы"
@@ -202,15 +204,13 @@ fun AppNavigation() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "login",
+            startDestination = "home",
             modifier = Modifier.padding(innerPadding)
         ) {
             composable("login") {
                 LoginScreen(
                     onLoginSuccess = {
-                        navController.navigate("home"){
-                            popUpTo("login") { inclusive = true }
-                        } },
+                        navController.navigate("profile") },
                     onRegisterClick = { navController.navigate("register") }
                 )
             }
@@ -235,6 +235,13 @@ fun AppNavigation() {
             ) { backStackEntry ->
                 val id = backStackEntry.arguments?.getInt("id") ?: return@composable
                 RecipientDetailScreen(navController = navController,recipientId = id)
+            }
+            composable(
+                route = "recipient_edit/{id}",
+                arguments = listOf(navArgument("id") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val id = backStackEntry.arguments?.getInt("id") ?: return@composable
+                RecipientEditScreen(navController = navController, recipientId = id)
             }
             composable("recipient_add") { RecipientAddScreen(navController) }
             composable(

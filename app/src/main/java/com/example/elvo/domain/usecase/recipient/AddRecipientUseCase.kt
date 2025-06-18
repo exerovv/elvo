@@ -4,6 +4,7 @@ import com.example.elvo.domain.enums.ErrorCodes
 import com.example.elvo.domain.model.Error
 import com.example.elvo.domain.model.recipient.Recipient
 import com.example.elvo.domain.model.recipient.RecipientResult
+import com.example.elvo.domain.model.recipient.RecipientShort
 import com.example.elvo.domain.repositories.RecipientRepository
 import com.example.elvo.utils.RecipientValidator
 import javax.inject.Inject
@@ -13,7 +14,7 @@ class AddRecipientUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         recipient: Recipient
-    ): RecipientResult<Unit> {
+    ): RecipientResult<RecipientShort> {
         val validationResult =
             RecipientValidator.validateRequiredFields(recipient)
 

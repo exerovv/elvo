@@ -6,11 +6,14 @@ import com.example.elvo.data.network.services.OrderService
 import com.example.elvo.data.network.services.PopularService
 import com.example.elvo.data.network.services.RecipientService
 import com.example.elvo.data.utils.AuthInterceptor
+import com.example.elvo.data.utils.MyAuthenticator
+import com.example.elvo.domain.repositories.AuthRepository
 import com.example.elvo.domain.repositories.DataStoreRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Authenticator
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -29,6 +32,12 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideAuthenticator(dataStoreRepository: DataStoreRepository, authRepository: AuthRepository): Authenticator{
+        return MyAuthenticator(dataStoreRepository, authRepository)
+    }
+
+    @Provides
+    @Singleton
     @Named("Unauthenticated")
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
@@ -40,9 +49,10 @@ object NetworkModule {
     @Provides
     @Singleton
     @Named("Authenticated")
-    fun provideAuthRetrofit(authInterceptor: Interceptor): Retrofit {
+    fun provideAuthRetrofit(authInterceptor: Interceptor, authenticator: MyAuthenticator): Retrofit {
         val client = OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
+            .authenticator(authenticator)
             .build()
         return Retrofit.Builder()
             .baseUrl("https://elvo-backend-production.up.railway.app/")

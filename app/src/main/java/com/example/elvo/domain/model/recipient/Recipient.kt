@@ -1,14 +1,14 @@
 package com.example.elvo.domain.model.recipient
 
 data class Recipient(
-    val name: String?,
-    val surname: String?,
-    val patronymic: String?,
-    val phone: String?,
-    val city: String?,
-    val street: String?,
-    val house: String?,
-    val building: String?,
-    val flat: String?,
-    val floor: String?
+    val name: String? = null,
+    val surname: String? = null,
+    val patronymic: String? = null,
+    val phone: String? = null,
+    val city: String? = null,
+    val street: String? = null,
+    val house: String? = null,
+    val building: String? = null,
+    val flat: String? = null,
+    val floor: String? = null
 )

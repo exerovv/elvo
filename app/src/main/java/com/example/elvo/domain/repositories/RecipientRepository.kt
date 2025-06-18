@@ -6,8 +6,8 @@ import com.example.elvo.domain.model.recipient.RecipientResult
 import com.example.elvo.domain.model.recipient.RecipientShort
 
 interface RecipientRepository {
-    suspend fun addRecipient(recipientRequest: Recipient): RecipientResult<Nothing>
+    suspend fun addRecipient(recipientRequest: Recipient): RecipientResult<RecipientShort>
     suspend fun fetchRecipientList(): RecipientResult<List<RecipientShort>>
     suspend fun fetchSingleRecipient(id: Int): RecipientResult<RecipientFull>
-    suspend fun updateRecipient(id: Int): RecipientResult<Nothing>
+    suspend fun updateRecipient(updateRequest: Recipient, id: Int): RecipientResult<RecipientShort>
 }

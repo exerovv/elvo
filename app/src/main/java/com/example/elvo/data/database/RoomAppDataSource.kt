@@ -25,7 +25,7 @@ abstract class RoomAppDataSource : RoomDatabase() {
                 RoomAppDataSource::class.java,
                 RoomContract.DATABASE_APP
             )
-                .fallbackToDestructiveMigration()
+                .fallbackToDestructiveMigration(false)
                 .build()
     }
 }

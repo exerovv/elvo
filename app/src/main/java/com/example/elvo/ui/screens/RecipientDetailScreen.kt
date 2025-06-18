@@ -1,13 +1,23 @@
-package com.example.myapplication
+package com.example.elvo.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,14 +30,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.elvo.domain.model.recipient.Recipient
 import com.example.elvo.domain.model.recipient.RecipientFull
 import com.example.elvo.ui.theme.AppTextFieldDefaults.textFieldColors
 import com.example.elvo.ui.viewmodels.recipient.RecipientUpdateUIState
 import com.example.elvo.ui.viewmodels.recipient.RecipientViewModel
 import com.example.elvo.ui.viewmodels.recipient.SingleRecipientUIState
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 
 @Composable
@@ -42,7 +50,7 @@ fun RecipientDetailScreen(navController: NavController,recipientId: Int, recipie
     var phone by remember { mutableStateOf("") }
     var address by remember { mutableStateOf("") }
 
-    var originalRecipient = remember { mutableStateOf<RecipientFull?>(null) }
+    val originalRecipient = remember { mutableStateOf<RecipientFull?>(null) }
 
     LaunchedEffect(recipientId) {
         recipientViewModel.fetchSingleRecipient(recipientId)

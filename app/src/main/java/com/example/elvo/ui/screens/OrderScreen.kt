@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.elvo.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,7 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -35,19 +35,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import com.example.elvo.utils.toUiString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.elvo.ui.viewmodels.order.OrderListUIState
 import com.example.elvo.ui.viewmodels.order.OrderViewModel
 import com.example.elvo.utils.PaymentStatus
+import com.example.elvo.utils.toUiString
 
 
 @Composable
 fun OrderScreen(navController: NavController, viewModel: OrderViewModel = hiltViewModel()) {
     val tabs = listOf("Созданные", "В пути", "Завершенные")
-    var selectedTabIndex by remember { mutableStateOf(0) }
+    var selectedTabIndex by remember { mutableIntStateOf(0) }
     val tabStatuses = listOf("created", "in_transit", "completed")
 
     val listState by viewModel.listState.collectAsState()
@@ -119,8 +119,8 @@ fun OrderScreen(navController: NavController, viewModel: OrderViewModel = hiltVi
                         items(filteredOrders) { order ->
                             OrderCard(
                                 orderName = order.orderName,
-                                current_status = order.currentStatus,
-                                payment_status = PaymentStatus.valueOf(order.paymentStatus).toUiString(),
+                                currentStatus = order.currentStatus,
+                                paymentStatus = PaymentStatus.valueOf(order.paymentStatus).toUiString(),
                             ) {
                                 navController.navigate("order_detail/${order.orderingId}")
                             }
@@ -134,7 +134,7 @@ fun OrderScreen(navController: NavController, viewModel: OrderViewModel = hiltVi
 }
 
 @Composable
-fun OrderCard(orderName: String, current_status: String, payment_status: String, onClick: () -> Unit) {
+fun OrderCard(orderName: String, currentStatus: String, paymentStatus: String, onClick: () -> Unit) {
     Card(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -163,7 +163,7 @@ fun OrderCard(orderName: String, current_status: String, payment_status: String,
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = payment_status,
+                    text = paymentStatus,
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color(0xFF808080),
                     textAlign = TextAlign.End,
@@ -171,7 +171,7 @@ fun OrderCard(orderName: String, current_status: String, payment_status: String,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = current_status,
+                    text = currentStatus,
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color(0xFF808080),
                     textAlign = TextAlign.End,

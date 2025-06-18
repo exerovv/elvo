@@ -38,24 +38,24 @@ import com.example.elvo.ui.screens.OrderingAddScreen
 import com.example.elvo.ui.screens.OrderingDetailScreen
 import com.example.elvo.ui.screens.RecipientAddScreen
 import com.example.elvo.ui.screens.HomeScreen
-import com.example.myapplication.OrderScreen
-import com.example.myapplication.ProfileScreen
-import com.example.myapplication.RecipientDetailScreen
-import com.example.myapplication.RecipientListScreen
+import com.example.elvo.ui.screens.OrderScreen
+import com.example.elvo.ui.screens.ProfileScreen
+import com.example.elvo.ui.screens.RecipientDetailScreen
+import com.example.elvo.ui.screens.RecipientListScreen
 
 
 sealed class Screen(val route: String) {
-    object Login : Screen("login")
-    object Register : Screen("register")
-    object Home : Screen("home")
-    object Orders : Screen("orders")
-    object Profile : Screen("profile")
-    object RecipientList : Screen("recipient_list")
-    object RecipientDetail : Screen("recipient_detail/{id}") {
+    data object Login : Screen("login")
+    data object Register : Screen("register")
+    data object Home : Screen("home")
+    data object Orders : Screen("orders")
+    data object Profile : Screen("profile")
+    data object RecipientList : Screen("recipient_list")
+    data object RecipientDetail : Screen("recipient_detail/{id}") {
         fun createRoute(id: Int) = "recipient_detail/$id"
     }
-    object RecipientAdd : Screen("recipient_add")
-    object OrderDetail : Screen("order_detail/{orderingId}") {
+    data object RecipientAdd : Screen("recipient_add")
+    data object OrderDetail : Screen("order_detail/{orderingId}") {
         fun createRoute(orderingId: Int) = "order_detail/$orderingId"
     }
 

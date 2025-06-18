@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.elvo.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.clickable
@@ -14,7 +14,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -32,7 +31,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.elvo.domain.model.recipient.RecipientShort
 import com.example.elvo.ui.navigation.Screen
-import com.example.elvo.ui.viewmodels.faq.FaqViewModel
 import com.example.elvo.ui.viewmodels.recipient.RecipientListUIState
 import com.example.elvo.ui.viewmodels.recipient.RecipientViewModel
 import kotlinx.coroutines.flow.collectLatest

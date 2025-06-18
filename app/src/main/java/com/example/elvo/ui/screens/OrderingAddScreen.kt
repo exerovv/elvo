@@ -98,7 +98,7 @@ fun OrderingAddScreen(navController: NavController,
             is OrderAddUIState.IncorrectLink -> Toast.makeText(context, "Некорректная ссылка", Toast.LENGTH_SHORT).show()
             is OrderAddUIState.Unauthorized -> Toast.makeText(context, "Вы не авторизованы", Toast.LENGTH_SHORT).show()
             is OrderAddUIState.Error -> Toast.makeText(context, context.getString((addOrderState as OrderAddUIState.Error).errorResId), Toast.LENGTH_SHORT).show()
-            null -> Toast.makeText(context, "Нет состояния", Toast.LENGTH_SHORT).show()
+            null -> {}
         }
     }
 

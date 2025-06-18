@@ -31,7 +31,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.example.elvo.domain.model.faq.Faq
 import com.example.elvo.ui.viewmodels.faq.FaqUIState
 import com.example.elvo.ui.viewmodels.faq.FaqViewModel
@@ -39,7 +38,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 
 @Composable
-fun FAQScreen(navController: NavController, faqViewModel: FaqViewModel = hiltViewModel()) {
+fun FAQScreen(faqViewModel: FaqViewModel = hiltViewModel()) {
     val state = faqViewModel.state
     val context = LocalContext.current
     val faqItems = remember { mutableStateOf<List<Faq>>(emptyList()) }

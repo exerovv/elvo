@@ -49,7 +49,6 @@ fun LoginScreen(onLoginSuccess: () -> Unit, onRegisterClick: () -> Unit, authVie
         authUIState.collect{ state ->
             when(state) {
                 is AuthUIState.Success -> {
-                    Toast.makeText(context, "Успех", Toast.LENGTH_LONG).show()
                     onLoginSuccess()}
                 is AuthUIState.Loading -> isLoading = true
                 is AuthUIState.Error -> Toast.makeText(context, state.errorResId, Toast.LENGTH_LONG).show()

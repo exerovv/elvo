@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,16 +41,19 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil3.compose.rememberAsyncImagePainter
+import com.example.elvo.ui.auth.viewmodels.AuthViewModel
 import com.example.elvo.ui.navigation.Screen
 import com.example.elvo.ui.viewmodels.user.UserUIState
 import com.example.elvo.ui.viewmodels.user.UserViewModel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 @Composable
-fun ProfileScreen(navController: NavController,  viewModel: UserViewModel = hiltViewModel()) {
-
-
+fun ProfileScreen(navController: NavController,  viewModel: UserViewModel = hiltViewModel(), authViewModel: AuthViewModel = hiltViewModel()) {
+    val showLogoutDialog = remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
     val username = remember { mutableStateOf("Пользователь") }
     val avatarUrl = remember { mutableStateOf<String?>(null) }
 
@@ -129,8 +134,35 @@ fun ProfileScreen(navController: NavController,  viewModel: UserViewModel = hilt
                     label = "FAQ",
                     onClick = { navController.navigate("faq") }
                 )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                ProfileOption(
+                    icon = Icons.Default.Close,
+                    label = "Выйти из профиля",
+                    onClick = {
+                        showLogoutDialog.value = true
+                    }
+                )
             }
         }
+        if (showLogoutDialog.value) {
+            LogoutDialog(
+                onConfirm = {
+                    coroutineScope.launch {
+                        authViewModel.logout()
+                    }
+                    showLogoutDialog.value = false
+                    navController.navigate("login") {
+                        popUpTo(0)
+                    }
+                },
+                onDismiss = {
+                    showLogoutDialog.value = false
+                }
+            )
+        }
+
     }
 }
 
@@ -158,4 +190,35 @@ fun ProfileOption(icon: ImageVector, label: String, onClick: () -> Unit) {
             style = MaterialTheme.typography.titleMedium
         )
     }
+}
+
+
+@Composable
+fun LogoutDialog(
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    androidx.compose.material3.AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Выход") },
+        text = { Text("Точно хотите выйти из профиля?") },
+        confirmButton = {
+            Text(
+                text = "Да",
+                modifier = Modifier
+                    .padding(8.dp)
+                    .clickable { onConfirm() },
+                color = MaterialTheme.colorScheme.primary
+            )
+        },
+        dismissButton = {
+            Text(
+                text = "Отмена",
+                modifier = Modifier
+                    .padding(8.dp)
+                    .clickable { onDismiss() },
+                color = MaterialTheme.colorScheme.secondary
+            )
+        }
+    )
 }

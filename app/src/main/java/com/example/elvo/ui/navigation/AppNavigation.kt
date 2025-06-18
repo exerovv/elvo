@@ -50,7 +50,9 @@ sealed class Screen(val route: String) {
     object Register : Screen("register")
     object Home : Screen("home")
     object Orders : Screen("orders")
+    object OrderAdd : Screen("order_add")
     object Profile : Screen("profile")
+    object FAQ: Screen("faq")
     object RecipientList : Screen("recipient_list")
     object RecipientEdit : Screen("recipient_edit/{id}")
     object RecipientDetail : Screen("recipient_detail/{id}") {
@@ -89,17 +91,17 @@ fun AppNavigation() {
                     title = {
                         Text(
                             when (currentDestination) {
-                                "register" -> "Регистрация"
-                                "profile" -> "Профиль"
-                                "orders" -> "Заказы"
-                                "home" -> "Главная"
-                                "recipient_list" -> "Список получателей"
-                                "recipient_detail" -> "Получатель"
-                                "recipient_add" -> "Новый получатель"
-                                "recipient_edit/{id}" -> "Редактирование"
-                                "order_detail/{orderingId}" -> "Данные о заказе"
-                                "order_add" -> "Добавить заказ"
-                                "faq" -> "Часто задаваемые вопросы"
+                                Screen.Register.route -> "Регистрация"
+                                Screen.Profile.route -> "Профиль"
+                                Screen.Orders.route -> "Заказы"
+                                Screen.Home.route  -> "Главная"
+                                Screen.RecipientList.route -> "Список получателей"
+                                Screen.RecipientDetail.route -> "Получатель"
+                                Screen.RecipientAdd.route -> "Новый получатель"
+                                Screen.RecipientEdit.route -> "Редактирование"
+                                Screen.OrderDetail.route -> "Данные о заказе"
+                                Screen.OrderAdd.route -> "Добавить заказ"
+                                Screen.FAQ.route -> "Часто задаваемые вопросы"
                                 else -> ""
                             },
 
@@ -252,7 +254,7 @@ fun AppNavigation() {
                 OrderingDetailScreen(navController = navController, orderingId = orderingId)
             }
             composable("order_add") { OrderingAddScreen(navController) }
-            composable("faq") { FAQScreen(navController) }
+            composable("faq") { FAQScreen() }
         }
     }
 

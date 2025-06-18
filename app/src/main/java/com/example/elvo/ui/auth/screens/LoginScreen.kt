@@ -42,13 +42,14 @@ fun LoginScreen(onLoginSuccess: () -> Unit, onRegisterClick: () -> Unit, authVie
 
     val authUIState = authViewModel.authUIState
     val context = LocalContext.current
+    var isLoading by remember { mutableStateOf(false) }
 
 
     LaunchedEffect(Unit) {
         authUIState.collect{ state ->
             when(state) {
                 is AuthUIState.Success -> onLoginSuccess()
-                is AuthUIState.Loading -> Toast.makeText(context, "Loading...", Toast.LENGTH_SHORT).show()
+                is AuthUIState.Loading -> isLoading = true
                 is AuthUIState.Error -> Toast.makeText(context, state.errorResId, Toast.LENGTH_LONG).show()
                 is AuthUIState.Unauthorized -> {}
                 is AuthUIState.UnknownError -> {Toast.makeText(context, context.getString(R.string.unknown_error), Toast.LENGTH_LONG).show()}
@@ -78,7 +79,8 @@ fun LoginScreen(onLoginSuccess: () -> Unit, onRegisterClick: () -> Unit, authVie
                     onValueChange = { login = it },
                     label = { Text("Логин") },
                     modifier = Modifier.fillMaxWidth(),
-                    colors = textFieldColors
+                    colors = textFieldColors,
+                    enabled = !isLoading
 
                     )
 
@@ -90,7 +92,8 @@ fun LoginScreen(onLoginSuccess: () -> Unit, onRegisterClick: () -> Unit, authVie
                     label = { Text("Пароль") },
                     modifier = Modifier.fillMaxWidth(),
                     visualTransformation = PasswordVisualTransformation(),
-                    colors = textFieldColors
+                    colors = textFieldColors,
+                    enabled = !isLoading
 
                     )
 
@@ -100,7 +103,8 @@ fun LoginScreen(onLoginSuccess: () -> Unit, onRegisterClick: () -> Unit, authVie
                     onClick = { authViewModel.login(login, password) },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0B57D0)),
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(6.dp)
+                    shape = RoundedCornerShape(6.dp),
+                    enabled = !isLoading
                 ) {
                     Text("Войти", color = Color.White)
                 }

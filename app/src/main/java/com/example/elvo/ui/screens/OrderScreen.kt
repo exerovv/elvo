@@ -38,6 +38,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.elvo.ui.navigation.Screen
 import com.example.elvo.ui.viewmodels.order.OrderListUIState
 import com.example.elvo.ui.viewmodels.order.OrderViewModel
 import com.example.elvo.utils.PaymentStatus
@@ -101,8 +102,8 @@ fun OrderScreen(navController: NavController, viewModel: OrderViewModel = hiltVi
                 }
             }
             is OrderListUIState.Unauthorized -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("Не авторизован", color = Color.Gray)
+                navController.navigate(Screen.Login.route) {
+                    popUpTo(0) { inclusive = true }
                 }
             }
             else -> {

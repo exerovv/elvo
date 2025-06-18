@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.elvo.domain.model.recipient.RecipientFull
+import com.example.elvo.ui.navigation.Screen
 import com.example.elvo.ui.theme.AppTextFieldDefaults.textFieldColors
 import com.example.elvo.ui.viewmodels.recipient.RecipientUpdateUIState
 import com.example.elvo.ui.viewmodels.recipient.RecipientViewModel
@@ -102,6 +103,9 @@ fun RecipientDetailScreen(navController: NavController,recipientId: Int, recipie
 
                 is RecipientUpdateUIState.Unauthorized -> {
                     Toast.makeText(context, "Вы не авторизованы", Toast.LENGTH_LONG).show()
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
                 }
 
                 is RecipientUpdateUIState.Error -> {
@@ -138,16 +142,7 @@ fun RecipientDetailScreen(navController: NavController,recipientId: Int, recipie
 
             Button(
                 onClick = {
-                    if (isEditing) {
-                        originalRecipient.value?.let { old ->
-                            val updatedRecipient = old.copy(
-                                fullName = name.trim(),
-                                phone = phone.trim(),
-                                address = address.trim()
-                            )
-                        }
-                    }
-                    isEditing = !isEditing
+                    navController.navigate("recipient_edit/$recipientId")
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0B57D0)),
                 modifier = Modifier
@@ -155,7 +150,7 @@ fun RecipientDetailScreen(navController: NavController,recipientId: Int, recipie
                     .padding(vertical = 16.dp),
                 shape = RoundedCornerShape(6.dp)
             ) {
-                Text(if (isEditing) "Сохранить" else "Редактировать", color = Color.White)
+                Text("Редактировать", color = Color.White)
             }
         }
     }

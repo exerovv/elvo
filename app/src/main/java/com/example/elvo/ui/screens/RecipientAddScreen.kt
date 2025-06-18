@@ -1,5 +1,7 @@
 package com.example.elvo.ui.screens
 
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -10,16 +12,30 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.elvo.domain.model.order.Order
+import com.example.elvo.domain.model.recipient.Recipient
+import com.example.elvo.ui.navigation.Screen
+
 import com.example.elvo.ui.theme.AppTextFieldDefaults.textFieldColors
+import com.example.elvo.ui.viewmodels.recipient.RecipientAddUIState
+import com.example.elvo.ui.viewmodels.recipient.RecipientViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 @Composable
-fun RecipientAddScreen(navController: NavController) {
+fun RecipientAddScreen(navController: NavController, recipientViewModel: RecipientViewModel = hiltViewModel()) {
+
+    val state = recipientViewModel.addState
+    val context = LocalContext.current
+
     val focusManager = LocalFocusManager.current
 
     var name by remember { mutableStateOf("") }
@@ -33,7 +49,62 @@ fun RecipientAddScreen(navController: NavController) {
     var flat by remember { mutableStateOf("") }
     var floor by remember { mutableStateOf("") }
     var phone by remember { mutableStateOf("") }
+    val coroutineScope = rememberCoroutineScope()
 
+    val openExitDialog = remember { mutableStateOf(false) }
+    val isFormFilled by remember(
+        name, surname, patronymic, city, street, house,
+        building, flat, floor, phone
+    ) {
+        mutableStateOf(
+            name.isNotBlank() ||
+                    surname.isNotBlank() ||
+                    patronymic.isNotBlank() ||
+                    city.isNotBlank() ||
+                    street.isNotBlank() ||
+                    house.isNotBlank() ||
+                    building.isNotBlank() ||
+                    flat.isNotBlank() ||
+                    floor.isNotBlank() ||
+                    phone.isNotBlank()
+        )
+    }
+
+    BackHandler(enabled = true) {
+        if (isFormFilled) {
+            openExitDialog.value = true
+        } else {
+            navController.popBackStack()
+        }
+    }
+
+
+
+    LaunchedEffect(state) {
+        state.collectLatest { state ->
+            when (state) {
+                is RecipientAddUIState.Success -> {
+                    Toast.makeText(context, "Получатель добавлен", Toast.LENGTH_SHORT).show()
+                    navController.popBackStack()
+                }
+                is RecipientAddUIState.Error -> {
+                    Toast
+                        .makeText(context, context.getString(state.errorResId), Toast.LENGTH_LONG)
+                        .show()
+                }
+                is RecipientAddUIState.RequiredFieldsAreEmpty -> {
+                    Toast.makeText(context, "Заполните все обязательные поля", Toast.LENGTH_SHORT).show()
+                }
+                is RecipientAddUIState.Unauthorized -> {
+                    Toast.makeText(context, "Неавторизованный доступ", Toast.LENGTH_SHORT).show()
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            }
+        }
+
+    }
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color(0xFFF7FAFC)
@@ -179,8 +250,22 @@ fun RecipientAddScreen(navController: NavController) {
 
             Button(
                 onClick = {
-                    // TODO:
-                    navController.popBackStack()
+                    val recipient = Recipient(
+                        name = name,
+                        surname = surname,
+                        patronymic = patronymic,
+                        phone = phone,
+                        city = city,
+                        street = street,
+                        house = house.toInt(),
+                        building = building,
+                        flat = flat.toInt(),
+                        floor = floor.toInt()
+                    )
+                    coroutineScope.launch {
+                        recipientViewModel.addRecipient(recipient)
+                    }
+
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0B57D0)),
                 modifier = Modifier
@@ -190,6 +275,39 @@ fun RecipientAddScreen(navController: NavController) {
             ) {
                 Text("Сохранить", color = Color.White)
             }
+            ConfirmExitDialog(
+                visible = openExitDialog.value,
+                onConfirm = {
+                    openExitDialog.value = false
+                    navController.popBackStack()
+                },
+                onDismiss = { openExitDialog.value = false }
+            )
         }
+    }
+}
+
+@Composable
+fun ConfirmExitDialog(
+    visible: Boolean,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+    title: String = "Подтверждение",
+    message: String = "Вы действительно хотите выйти без сохранения?"
+) {
+    if (visible) {
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            title = { Text(title) },
+            text = { Text(message) },
+            confirmButton = {
+                TextButton(onClick = onConfirm) { Text("Да") }
+            },
+            dismissButton = {
+                TextButton(onClick = onDismiss) { Text("Отмена") }
+            },
+            shape = RoundedCornerShape(16.dp),
+            containerColor = Color.White
+        )
     }
 }

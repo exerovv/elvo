@@ -54,7 +54,7 @@ class RecipientViewModel @Inject constructor(
     suspend fun addRecipient(recipient: Recipient) {
         when (val result = addRecipientUseCase(recipient)) {
             is RecipientResult.Success -> {
-                _addState.emit(RecipientAddUIState.Success)
+                _addState.emit(RecipientAddUIState.Success(result.data!!))
             }
             is RecipientResult.Failure -> {
                 if (result.error.errorCode == ErrorCodes.REQUIRED_FIELD_EMPTY) {
@@ -79,7 +79,7 @@ class RecipientViewModel @Inject constructor(
 
     suspend fun updateRecipient(id: Int, newRecipient: Recipient, oldRecipient: Recipient) {
         when (val result = updateRecipientUseCase(id, newRecipient, oldRecipient)) {
-            is RecipientResult.Success -> _updateState.emit(RecipientUpdateUIState.Success)
+            is RecipientResult.Success -> _updateState.emit(RecipientUpdateUIState.Success(result.data))
             is RecipientResult.Failure -> {
                 if (result.error.errorCode == ErrorCodes.REQUIRED_FIELD_EMPTY) {
                     _updateState.emit(RecipientUpdateUIState.RequiredFieldsAreEmpty)
@@ -109,7 +109,7 @@ class RecipientViewModel @Inject constructor(
     suspend fun fetchSingleRecipient(id: Int){
         when (val result = fetchSingleRecipientUseCase(id)) {
             is RecipientResult.Success<RecipientFull> -> _singleRecipientState.value =
-                SingleRecipientUIState.Success(result.data)
+                SingleRecipientUIState.Success(result.data!!)
             is RecipientResult.Failure -> {
                 if (result.error.errorCode == ErrorCodes.UNAUTHORIZED) {
                     _singleRecipientState.value = SingleRecipientUIState.Unauthorized
@@ -129,7 +129,7 @@ class RecipientViewModel @Inject constructor(
     suspend fun fetchRecipients() {
         when (val result = fetchRecipientListUseCase()) {
             is RecipientResult.Success<List<RecipientShort>> -> _listState.value =
-                RecipientListUIState.Success(result.data)
+                RecipientListUIState.Success(result.data!!)
             is RecipientResult.Failure -> {
                 if (result.error.errorCode == ErrorCodes.UNAUTHORIZED) {
                     _listState.value = RecipientListUIState.Unauthorized

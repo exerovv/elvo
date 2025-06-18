@@ -81,7 +81,7 @@ class RecipientRepositoryImpl @Inject constructor(
                     updateRequest.floor
                 ), id
             )
-            RecipientResult.Success(result.toDomain())
+            RecipientResult.Success(result.updatedRecipient?.toDomain())
         } catch (e: HttpException) {
             val errorBody = e.response()?.errorBody()?.string()
             val error = ErrorParser.parseError(errorBody)

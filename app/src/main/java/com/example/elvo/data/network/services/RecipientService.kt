@@ -4,6 +4,7 @@ import com.example.elvo.data.network.models.recipient.RecipientFullDTO
 import com.example.elvo.data.network.models.recipient.RecipientRequest
 import com.example.elvo.data.network.models.recipient.RecipientShortDTO
 import com.example.elvo.data.network.models.recipient.UpdateRecipientRequest
+import com.example.elvo.data.network.models.recipient.UpdatedRecipientDTO
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -21,5 +22,5 @@ interface RecipientService {
     suspend fun fetchSingleRecipient(@Path("id") id: Int): RecipientFullDTO
 
     @PUT("update/{id}")
-    suspend fun updateRecipient(@Body updateRequest: UpdateRecipientRequest, @Path("id") id: Int): RecipientShortDTO
+    suspend fun updateRecipient(@Body updateRequest: UpdateRecipientRequest, @Path("id") id: Int): UpdatedRecipientDTO
 }

@@ -1,5 +1,6 @@
 package com.example.elvo.data.network.implementations
 
+import android.util.Log
 import com.example.elvo.data.network.converters.toDomain
 import com.example.elvo.data.network.models.auth.AuthRequest
 import com.example.elvo.data.network.models.auth.RefreshRequest
@@ -53,17 +54,23 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun refresh(): AuthResult {
         return try {
-            val refreshToken = dataStoreRepository.getRefreshToken().first()
-            if (refreshToken != null) {
-                val result = api.refresh(
-                    RefreshRequest(
-                        refreshToken = refreshToken
+            val id = dataStoreRepository.getUserId().first()
+            if(id != null){
+                val refreshToken = dataStoreRepository.getRefreshToken().first()
+                if (refreshToken != null) {
+                    val result = id.let {
+                        api.refresh(
+                            it,
+                            RefreshRequest(
+                                refreshToken = refreshToken
+                            )
+                        )
+                    }
+                    dataStoreRepository.saveTokens(
+                        accessToken = result.accessToken,
+                        refreshToken = result.refreshToken
                     )
-                )
-                dataStoreRepository.saveTokens(
-                    accessToken = result.accessToken,
-                    refreshToken = result.refreshToken
-                )
+                }
                 AuthResult.Success()
             }else{
                 AuthResult.Failure(Error(ErrorCodes.UNKNOWN_ERROR))
@@ -75,9 +82,13 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun logout(): AuthResult {
         return try{
-            api.logout()
+            val id = dataStoreRepository.getUserId().first()
+            Log.d("Logout", "Start")
+            id?.let{ api.logout(it) }
+            Log.d("Logout", "Before")
             dataStoreRepository.clearTokens()
             dataStoreRepository.clearUserInfo()
+            Log.d("Logout", "After")
             AuthResult.Success()
         }catch (e: Exception) {
             AuthResult.Failure(Error(ErrorCodes.UNKNOWN_ERROR))

@@ -1,5 +1,6 @@
 package com.example.elvo.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,12 +33,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.elvo.R
 import com.example.elvo.ui.navigation.Screen
 import com.example.elvo.ui.viewmodels.order.OrderListUIState
 import com.example.elvo.ui.viewmodels.order.OrderViewModel
@@ -47,9 +51,10 @@ import com.example.elvo.utils.toUiString
 
 @Composable
 fun OrderScreen(navController: NavController, viewModel: OrderViewModel = hiltViewModel()) {
-    val tabs = listOf("Созданные", "В пути", "Завершенные")
+    val tabs = listOf(stringResource(R.string.created), stringResource(R.string.in_transit), stringResource(R.string.completed))
     var selectedTabIndex by remember { mutableIntStateOf(0) }
     val tabStatuses = listOf("created", "in_transit", "completed")
+    val context = LocalContext.current
 
     val listState by viewModel.listState.collectAsState()
 
@@ -97,18 +102,15 @@ fun OrderScreen(navController: NavController, viewModel: OrderViewModel = hiltVi
 
         when (listState) {
             is OrderListUIState.Error -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("Произошла ошибка", color = Color.Red)
-                }
+                Toast.makeText(context, stringResource(R.string.error_occured), Toast.LENGTH_SHORT).show()
             }
             is OrderListUIState.Unauthorized -> {
-                navController.navigate(Screen.Login.route) {
-                }
+                navController.navigate(Screen.Login.route)
             }
             else -> {
                 if (filteredOrders.isEmpty()) {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text("Нет заказов", color = Color.Gray)
+                        Text(stringResource(R.string.no_orders), color = Color.Gray)
                     }
                 } else {
                     LazyColumn(

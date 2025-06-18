@@ -5,6 +5,7 @@ import com.example.elvo.data.network.models.auth.RefreshRequest
 import com.example.elvo.data.network.models.auth.AuthResponseDTO
 import retrofit2.http.Body
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface AuthService {
     @POST("signup")
@@ -17,11 +18,12 @@ interface AuthService {
         @Body request: AuthRequest
     ): AuthResponseDTO
 
-    @POST("refresh")
+    @POST("refresh/{id}")
     suspend fun refresh(
+        @Path("id") id: Int,
         @Body request: RefreshRequest
     ): AuthResponseDTO
 
-    @POST("logout")
-    suspend fun logout()
+    @POST("logout/{id}")
+    suspend fun logout(@Path("id") id: Int)
 }

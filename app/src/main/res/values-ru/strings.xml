@@ -21,4 +21,22 @@
     <string name="incorrect_link">Неправильная ссылка</string>
     <string name="incorrect_order_info">Некорректная информация о заказе</string>
     <string name="order_not_found">Заказ не найден</string>
+    <string name="app_description">ELVO — это приложение, которое объединяет скорость и технологичность. Мы помогаем вам доставлять и отслеживать товары с Poison быстро, удобно и без стресса. Наш интерфейс прост и интуитивен, а поддержка надёжна. Всё ради вашего комфорта.</string>
+    <string name="about_app_title">О приложении</string>
+    <string name="recomemended_title">Рекомендованное</string>
+    <string name="logo_description">Логотип Elvo</string>
+    <string name="created">Созданные</string>
+    <string name="in_transit">В пути</string>
+    <string name="completed">Завершенные</string>
+    <string name="error_occured">Произошла ошибка</string>
+    <string name="no_orders">Нет заказов</string>
+    <string name="user">Пользователь</string>
+    <string name="recipients">Получатели</string>
+    <string name="create_order">Создать заказ</string>
+    <string name="logout">Выйти из профиля</string>
+    <string name="exit">Выйти</string>
+    <string name="logout_confirmation">Вы точно хотите выйти из профиля?</string>
+    <string name="cancel">Отмена</string>
+    <string name="recipient_added">Получатель добавлен</string>
+    <string name="fill_required_fields">Заполните все обязательные поля</string>
 </resources>

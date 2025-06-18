@@ -21,4 +21,23 @@
     <string name="incorrect_link">Incorrect link</string>
     <string name="incorrect_order_info">Incorrect order info</string>
     <string name="order_not_found">Order not found</string>
+    <string name="app_description">ELVO is an application that combines speed and adaptability. We help you deliver and track items with Poison quickly, conveniently, and stress-free. Our interface is simple and intuitive, and our support is reliable. All for your comfort.</string>
+    <string name="company_name" translatable="false">ELVO</string>
+    <string name="about_app_title">About the app</string>
+    <string name="recomemended_title">Recomemended</string>
+    <string name="logo_description">Elvo logo</string>
+    <string name="created">Created</string>
+    <string name="in_transit">In transit</string>
+    <string name="completed">Completed</string>
+    <string name="error_occured">An error occurred</string>
+    <string name="no_orders">No orders</string>
+    <string name="user">User</string>
+    <string name="recipients">Recipients</string>
+    <string name="create_order">Create an order</string>
+    <string name="logout">Logout</string>
+    <string name="exit">Exit</string>
+    <string name="logout_confirmation">Are you sure you want to logout?</string>
+    <string name="cancel">Cancel</string>
+    <string name="recipient_added">Recipient added</string>
+    <string name="fill_required_fields">Fill in all required fields</string>
 </resources>

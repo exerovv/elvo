@@ -1,5 +1,6 @@
 package com.example.elvo.data.network.implementations
 
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -62,7 +63,14 @@ class DataStoreRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getUserId(): Flow<Int?> {
+        return dataStore.data.map {
+            it[USER_ID]
+        }
+    }
+
     override suspend fun clearUserInfo() {
+        Log.d("Logout", "Clearing")
         dataStore.edit { preferences ->
             preferences.remove(USER_ID)
             preferences.remove(USER_NAME)

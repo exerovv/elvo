@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -72,7 +73,7 @@ fun HomeScreen(popularViewModel: PopularViewModel = hiltViewModel()) {
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = "Рекомендованное",
+            text = stringResource(R.string.recomemended_title),
             style = MaterialTheme.typography.titleMedium.copy(
                 fontWeight = FontWeight.Bold
             )
@@ -93,7 +94,7 @@ fun HomeScreen(popularViewModel: PopularViewModel = hiltViewModel()) {
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = "О приложении",
+            text = stringResource(R.string.about_app_title),
             style = MaterialTheme.typography.titleMedium.copy(
                 fontWeight = FontWeight.Bold
             )
@@ -109,7 +110,7 @@ fun HomeScreen(popularViewModel: PopularViewModel = hiltViewModel()) {
         ) {
             Image(
                 painter = painterResource(id = R.drawable.elvo_logo),
-                contentDescription = "Логотип ELVO",
+                contentDescription = stringResource(R.string.logo_description),
                 modifier = Modifier
                     .size(72.dp)
                     .clip(RoundedCornerShape(12.dp))
@@ -119,7 +120,7 @@ fun HomeScreen(popularViewModel: PopularViewModel = hiltViewModel()) {
 
             Column {
                 Text(
-                    text = "ELVO",
+                    text = stringResource(R.string.company_name),
                     style = MaterialTheme.typography.headlineSmall.copy(
                         fontWeight = FontWeight.ExtraBold,
                         fontSize = 26.sp
@@ -138,7 +139,7 @@ fun HomeScreen(popularViewModel: PopularViewModel = hiltViewModel()) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "ELVO — это приложение, которое объединяет скорость и технологичность. Мы помогаем вам доставлять и отслеживать товары с Poizon быстро, удобно и без стресса. Наш интерфейс прост и интуитивен, а поддержка надёжна. Всё ради вашего комфорта.",
+            text = stringResource(R.string.app_description),
             style = MaterialTheme.typography.bodyLarge.copy(
                 color = Color(0xFF1A1A1A),
                 lineHeight = 22.sp

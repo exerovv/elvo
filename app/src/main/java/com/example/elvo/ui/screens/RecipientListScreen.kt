@@ -63,11 +63,7 @@ fun RecipientListScreen(navController: NavController, recipientViewModel: Recipi
                 }
 
                 is RecipientListUIState.Unauthorized -> {
-                    Toast
-                        .makeText(context, "Вы не авторизованы", Toast.LENGTH_LONG)
-                        .show()
-                    navController.navigate(Screen.Login.route) {
-                    }
+                    navController.navigate(Screen.Login.route)
                 }
             }
         }

@@ -1,6 +1,5 @@
 package com.example.elvo.ui.screens
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,14 +32,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil3.compose.rememberAsyncImagePainter
+import com.example.elvo.R
 import com.example.elvo.ui.auth.viewmodels.AuthViewModel
 import com.example.elvo.ui.navigation.Screen
 import com.example.elvo.ui.viewmodels.user.UserUIState
@@ -52,16 +52,16 @@ import kotlinx.coroutines.launch
 @Composable
 fun ProfileScreen(navController: NavController,  viewModel: UserViewModel = hiltViewModel(), authViewModel: AuthViewModel = hiltViewModel()) {
     val showLogoutDialog = remember { mutableStateOf(false) }
-    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    val username = remember { mutableStateOf("Пользователь") }
+    val defaultUserName = stringResource(R.string.user)
+    val username = remember { mutableStateOf( defaultUserName ) }
     val avatarUrl = remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(Unit) {
         viewModel.userInfoState.collectLatest { state ->
             when (state) {
                 is UserUIState.Success -> {
-                    username.value = state.userInfo.username ?: "Пользователь"
+                    username.value = state.userInfo.username ?: defaultUserName
                     avatarUrl.value = state.userInfo.avatarUrl
                 }
 
@@ -91,7 +91,7 @@ fun ProfileScreen(navController: NavController,  viewModel: UserViewModel = hilt
             val avatarPainter = if (!avatarUrl.value.isNullOrEmpty()) {
                 rememberAsyncImagePainter(avatarUrl.value)
             } else {
-                painterResource(id = com.example.elvo.R.drawable.avatar)
+                painterResource(id = R.drawable.avatar)
             }
 
             Image(
@@ -117,14 +117,14 @@ fun ProfileScreen(navController: NavController,  viewModel: UserViewModel = hilt
             ) {
                 ProfileOption(
                     icon = Icons.Default.Face,
-                    label = "Получатели",
+                    label = stringResource(R.string.recipients),
                     onClick = { navController.navigate("recipient_list") }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
                 ProfileOption(
                     icon = Icons.Default.Add,
-                    label = "Добавить заказ",
+                    label = stringResource(R.string.create_order),
                     onClick = { navController.navigate("order_add") }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -139,7 +139,7 @@ fun ProfileScreen(navController: NavController,  viewModel: UserViewModel = hilt
 
                 ProfileOption(
                     icon = Icons.Default.Close,
-                    label = "Выйти из профиля",
+                    label = stringResource(R.string.logout),
                     onClick = {
                         showLogoutDialog.value = true
                     }
@@ -200,8 +200,8 @@ fun LogoutDialog(
 ) {
     androidx.compose.material3.AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Выход") },
-        text = { Text("Точно хотите выйти из профиля?") },
+        title = { Text(stringResource(R.string.exit)) },
+        text = { Text(stringResource(R.string.logout_confirmation)) },
         confirmButton = {
             Text(
                 text = "Да",
@@ -213,7 +213,7 @@ fun LogoutDialog(
         },
         dismissButton = {
             Text(
-                text = "Отмена",
+                text = stringResource(R.string.cancel),
                 modifier = Modifier
                     .padding(8.dp)
                     .clickable { onDismiss() },

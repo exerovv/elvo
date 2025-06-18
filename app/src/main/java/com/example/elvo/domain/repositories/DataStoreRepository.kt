@@ -11,5 +11,6 @@ interface DataStoreRepository {
     suspend fun clearTokens()
     suspend fun saveUserInfo(userInfo: UserInfo)
     fun getUserInfo() : Flow<ProfileInfo?>
+    fun getUserId(): Flow<Int?>
     suspend fun clearUserInfo()
 }

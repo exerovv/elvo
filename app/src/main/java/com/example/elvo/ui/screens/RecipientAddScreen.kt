@@ -2,12 +2,33 @@ package com.example.elvo.ui.screens
 
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -19,10 +40,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.elvo.domain.model.order.Order
+import com.example.elvo.R
 import com.example.elvo.domain.model.recipient.Recipient
 import com.example.elvo.ui.navigation.Screen
-
 import com.example.elvo.ui.theme.AppTextFieldDefaults.textFieldColors
 import com.example.elvo.ui.viewmodels.recipient.RecipientAddUIState
 import com.example.elvo.ui.viewmodels.recipient.RecipientViewModel
@@ -84,7 +104,7 @@ fun RecipientAddScreen(navController: NavController, recipientViewModel: Recipie
         state.collectLatest { state ->
             when (state) {
                 is RecipientAddUIState.Success -> {
-                    Toast.makeText(context, "Получатель добавлен", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.recipient_added), Toast.LENGTH_SHORT).show()
                     navController.popBackStack()
                 }
                 is RecipientAddUIState.Error -> {
@@ -93,7 +113,7 @@ fun RecipientAddScreen(navController: NavController, recipientViewModel: Recipie
                         .show()
                 }
                 is RecipientAddUIState.RequiredFieldsAreEmpty -> {
-                    Toast.makeText(context, "Заполните все обязательные поля", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.fill_required_fields), Toast.LENGTH_SHORT).show()
                 }
                 is RecipientAddUIState.Unauthorized -> {
                     Toast.makeText(context, "Неавторизованный доступ", Toast.LENGTH_SHORT).show()

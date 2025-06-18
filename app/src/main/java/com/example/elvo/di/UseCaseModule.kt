@@ -6,9 +6,7 @@ import com.example.elvo.domain.repositories.FaqRepository
 import com.example.elvo.domain.repositories.OrderRepository
 import com.example.elvo.domain.repositories.PopularRepository
 import com.example.elvo.domain.repositories.RecipientRepository
-import com.example.elvo.domain.usecase.popular.FetchPopularItemsUseCase
 import com.example.elvo.domain.usecase.auth.LoginUseCase
-import com.example.elvo.domain.usecase.auth.RefreshUseCase
 import com.example.elvo.domain.usecase.auth.RegisterUseCase
 import com.example.elvo.domain.usecase.faq.FetchFaqUseCase
 import com.example.elvo.domain.usecase.order.AddOrderUseCase
@@ -16,6 +14,7 @@ import com.example.elvo.domain.usecase.order.FetchOrderHistoryUseCase
 import com.example.elvo.domain.usecase.order.FetchOrderListUseCase
 import com.example.elvo.domain.usecase.order.FetchSingleOrderUseCase
 import com.example.elvo.domain.usecase.order.PayForOrderUseCase
+import com.example.elvo.domain.usecase.popular.FetchPopularItemsUseCase
 import com.example.elvo.domain.usecase.recipient.AddRecipientUseCase
 import com.example.elvo.domain.usecase.recipient.FetchRecipientListUseCase
 import com.example.elvo.domain.usecase.recipient.FetchSingleRecipientUseCase
@@ -38,11 +37,6 @@ object UseCaseModule {
     @Provides
     fun provideRegisterUseCase(authRepository: AuthRepository, dataStoreRepository: DataStoreRepository): RegisterUseCase {
         return RegisterUseCase(authRepository, dataStoreRepository)
-    }
-
-    @Provides
-    fun provideRefreshUseCase(authRepository: AuthRepository, dataStoreRepository: DataStoreRepository): RefreshUseCase {
-        return RefreshUseCase(authRepository, dataStoreRepository)
     }
 
     @Provides

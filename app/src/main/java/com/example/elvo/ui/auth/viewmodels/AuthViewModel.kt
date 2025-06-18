@@ -4,9 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.elvo.R
 import com.example.elvo.domain.enums.ErrorCodes
+import com.example.elvo.domain.model.auth.AuthResult
 import com.example.elvo.domain.model.auth.AuthState
 import com.example.elvo.domain.usecase.auth.LoginUseCase
-import com.example.elvo.domain.usecase.auth.RefreshUseCase
+import com.example.elvo.domain.usecase.auth.LogoutUseCase
 import com.example.elvo.domain.usecase.auth.RegisterUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -19,7 +20,7 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
     private val registerUseCase: RegisterUseCase,
-    private val refreshUseCase: RefreshUseCase
+    private val logoutUseCase: LogoutUseCase
 ) : ViewModel() {
     private val _authUIState = MutableSharedFlow<AuthUIState>()
     val authUIState: SharedFlow<AuthUIState>
@@ -41,10 +42,13 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun refresh() {
-        viewModelScope.launch {
-            refreshUseCase().collect { result ->
-                emitAuthUIState(result)
+    suspend fun logout() {
+        when (logoutUseCase()) {
+            is AuthResult.Success -> {
+                _authUIState.emit(AuthUIState.Success)
+            }
+            is AuthResult.Failure -> {
+                _authUIState.emit(AuthUIState.Unauthorized)
             }
         }
     }

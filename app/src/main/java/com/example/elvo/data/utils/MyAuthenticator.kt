@@ -5,7 +5,6 @@ import com.example.elvo.domain.model.auth.AuthResult
 import com.example.elvo.domain.repositories.AuthRepository
 import com.example.elvo.domain.repositories.DataStoreRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
@@ -35,10 +34,9 @@ class MyAuthenticator @Inject constructor(
     }
 
     private suspend fun updateToken(): RefreshResult{
-        val refreshToken = dataStoreRepository.getRefreshToken().first() ?: return RefreshResult.Error
-        val result = authRepository.refresh(refreshToken)
+        val result = authRepository.refresh()
         return if (result is AuthResult.Success){
-            (RefreshResult.Success(result.data.accessToken, result.data.refreshToken))
+            (RefreshResult.Success(result.data!!.accessToken, result.data.refreshToken))
         }else{
             RefreshResult.Error
         }

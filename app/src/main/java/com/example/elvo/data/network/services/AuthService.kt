@@ -21,4 +21,7 @@ interface AuthService {
     suspend fun refresh(
         @Body request: RefreshRequest
     ): AuthResponseDTO
+
+    @POST("logout")
+    suspend fun logout()
 }

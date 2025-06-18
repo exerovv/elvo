@@ -44,7 +44,7 @@ class LoginUseCase @Inject constructor(
             if (result is AuthResult.Success) {
                 try {
                     dataStoreRepository.saveTokens(
-                        accessToken = result.data.accessToken,
+                        accessToken = result.data!!.accessToken,
                         refreshToken = result.data.refreshToken
                     )
                     if(result.data.userInfo != null){

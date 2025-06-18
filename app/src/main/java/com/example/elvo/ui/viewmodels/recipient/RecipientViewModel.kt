@@ -109,7 +109,7 @@ class RecipientViewModel @Inject constructor(
     suspend fun fetchSingleRecipient(id: Int){
         when (val result = fetchSingleRecipientUseCase(id)) {
             is RecipientResult.Success<RecipientFull> -> _singleRecipientState.value =
-                SingleRecipientUIState.Success(result.data!!)
+                SingleRecipientUIState.Success(result.data)
             is RecipientResult.Failure -> {
                 if (result.error.errorCode == ErrorCodes.UNAUTHORIZED) {
                     _singleRecipientState.value = SingleRecipientUIState.Unauthorized
@@ -129,7 +129,7 @@ class RecipientViewModel @Inject constructor(
     suspend fun fetchRecipients() {
         when (val result = fetchRecipientListUseCase()) {
             is RecipientResult.Success<List<RecipientShort>> -> _listState.value =
-                RecipientListUIState.Success(result.data!!)
+                RecipientListUIState.Success(result.data)
             is RecipientResult.Failure -> {
                 if (result.error.errorCode == ErrorCodes.UNAUTHORIZED) {
                     _listState.value = RecipientListUIState.Unauthorized

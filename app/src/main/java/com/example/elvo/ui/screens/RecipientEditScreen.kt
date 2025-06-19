@@ -31,11 +31,13 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.elvo.R
 import com.example.elvo.domain.model.recipient.Recipient
 import com.example.elvo.ui.navigation.Screen
 import com.example.elvo.ui.theme.AppTextFieldDefaults.textFieldColors
@@ -113,17 +115,18 @@ fun RecipientEditScreen(
         state.collectLatest {
             when (it) {
                 is RecipientUpdateUIState.Success -> {
-                    Toast.makeText(context, "Получатель обновлен", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,
+                        context.getString(R.string.updated_recipient), Toast.LENGTH_SHORT).show()
                     navController.popBackStack()
                 }
                 is RecipientUpdateUIState.Error -> {
                     Toast.makeText(context, context.getString(it.errorResId), Toast.LENGTH_LONG).show()
                 }
                 is RecipientUpdateUIState.RequiredFieldsAreEmpty -> {
-                    Toast.makeText(context, "Заполните обязательные поля", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,
+                        context.getString(R.string.required_fields), Toast.LENGTH_SHORT).show()
                 }
                 is RecipientUpdateUIState.Unauthorized -> {
-                    Toast.makeText(context, "Неавторизованный доступ", Toast.LENGTH_SHORT).show()
                     navController.navigate(Screen.Login.route) {                  }
                 }
                 else -> {}
@@ -222,7 +225,7 @@ fun RecipientEditForm(
             OutlinedTextField(
                 value = surname,
                 onValueChange = onSurnameChange,
-                label = { Text("Фамилия") },
+                label = { Text(stringResource(R.string.Surname)) },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions { focusManager.moveFocus(FocusDirection.Down) }
@@ -242,7 +245,7 @@ fun RecipientEditForm(
             OutlinedTextField(
                 value = patronymic,
                 onValueChange = onPatronymicChange,
-                label = { Text("Отчество") },
+                label = { Text(stringResource(R.string.patronymic)) },
                 modifier = Modifier.fillMaxWidth(),
                 enabled = !hasNoMiddleName,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -255,7 +258,7 @@ fun RecipientEditForm(
                     checked = hasNoMiddleName,
                     onCheckedChange = onHasNoMiddleNameChange
                 )
-                Text("Нет отчества")
+                Text(stringResource(R.string.no_patronymic))
             }
 
 
@@ -264,7 +267,7 @@ fun RecipientEditForm(
             OutlinedTextField(
                 value = city,
                 onValueChange = onCityChange,
-                label = { Text("Город") },
+                label = { Text(stringResource(R.string.City)) },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
             )
@@ -273,7 +276,7 @@ fun RecipientEditForm(
             OutlinedTextField(
                 value = street,
                 onValueChange = onStreetChange,
-                label = { Text("Улица") },
+                label = { Text(stringResource(R.string.Street)) },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
             )
@@ -295,7 +298,7 @@ fun RecipientEditForm(
                 OutlinedTextField(
                     value = building,
                     onValueChange = onBuildingChange,
-                    label = { Text("Корпус", fontSize = 10.sp) },
+                    label = { Text(stringResource(R.string.Building), fontSize = 10.sp) },
                     modifier = Modifier.weight(1f),
                     colors = textFieldColors,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -306,7 +309,7 @@ fun RecipientEditForm(
                 OutlinedTextField(
                     value = flat,
                     onValueChange = onFlatChange,
-                    label = { Text("Квартира", fontSize = 10.sp) },
+                    label = { Text(stringResource(R.string.Flat), fontSize = 10.sp) },
                     modifier = Modifier.weight(1f),
                     colors = textFieldColors,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -317,7 +320,7 @@ fun RecipientEditForm(
                 OutlinedTextField(
                     value = floor,
                     onValueChange = onFloorChange,
-                    label = { Text("Этаж", fontSize = 10.sp) },
+                    label = { Text(stringResource(R.string.Floor), fontSize = 10.sp) },
                     modifier = Modifier.weight(1f),
                     colors = textFieldColors,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -330,7 +333,7 @@ fun RecipientEditForm(
             OutlinedTextField(
                 value = phone,
                 onValueChange = onPhoneChange,
-                label = { Text("Номер телефона") },
+                label = { Text(stringResource(R.string.phone_number)) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = textFieldColors,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -346,7 +349,7 @@ fun RecipientEditForm(
                     .padding(vertical = 16.dp),
                 shape = RoundedCornerShape(6.dp)
             ) {
-                Text("Сохранить")
+                Text(stringResource(R.string.Save))
             }
         }
 

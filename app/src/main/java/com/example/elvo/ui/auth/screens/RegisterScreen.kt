@@ -27,8 +27,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.elvo.R
 import com.example.elvo.ui.auth.viewmodels.AuthUIState
 import com.example.elvo.ui.auth.viewmodels.AuthViewModel
 
@@ -46,7 +48,8 @@ fun RegisterScreen(onLoginSuccess: () -> Unit, authViewModel: AuthViewModel = hi
         authUIState.collect{ state ->
             when(state) {
                 is AuthUIState.Success -> onLoginSuccess()
-                is AuthUIState.Loading -> Toast.makeText(context, "Loading...", Toast.LENGTH_SHORT).show()
+                is AuthUIState.Loading -> Toast.makeText(context,
+                    context.getString(R.string.state_loading), Toast.LENGTH_SHORT).show()
                 is AuthUIState.Error -> Toast.makeText(context, state.errorResId, Toast.LENGTH_LONG).show()
                 else -> {}
             }
@@ -78,7 +81,7 @@ fun RegisterScreen(onLoginSuccess: () -> Unit, authViewModel: AuthViewModel = hi
                 OutlinedTextField(
                     value = login,
                     onValueChange = {login = it },
-                    label = { Text("Логин") },
+                    label = { Text(stringResource(R.string.login))  },
                     modifier = Modifier.fillMaxWidth(),
                     colors = textFieldColors
 
@@ -89,7 +92,7 @@ fun RegisterScreen(onLoginSuccess: () -> Unit, authViewModel: AuthViewModel = hi
                 OutlinedTextField(
                     value = password,
                     onValueChange = {password = it },
-                    label = { Text("Пароль") },
+                    label = { Text(stringResource(R.string.password)) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = textFieldColors
                     )
@@ -99,7 +102,7 @@ fun RegisterScreen(onLoginSuccess: () -> Unit, authViewModel: AuthViewModel = hi
                 OutlinedTextField(
                     value = confirmationPassword,
                     onValueChange = {confirmationPassword = it },
-                    label = { Text("Подтверждение пароля") },
+                    label = { Text(stringResource(R.string.password_confirmation)) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = textFieldColors
                     )
@@ -112,7 +115,7 @@ fun RegisterScreen(onLoginSuccess: () -> Unit, authViewModel: AuthViewModel = hi
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(6.dp)
                 ) {
-                    Text("Регистрация", color = Color.White)
+                    Text(stringResource(R.string.signup), color = Color.White)
                 }
             }
             TextButton(
@@ -122,7 +125,7 @@ fun RegisterScreen(onLoginSuccess: () -> Unit, authViewModel: AuthViewModel = hi
                     .padding(bottom = 20.dp)
             ) {
                 Text(
-                    "Уже есть аккаунт? Войти",
+                    stringResource(R.string.already_account),
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Black
                 )

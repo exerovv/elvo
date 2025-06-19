@@ -25,6 +25,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavType
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
@@ -78,7 +79,6 @@ fun AppNavigation() {
     val showTopBar = currentDestination != "login"
 
     val showExitDialog = remember { mutableStateOf(false) }
-    val showDialogOnBack = currentDestination in listOf("recipient_add", "order_add", "register")
 
     Scaffold(
         topBar = {
@@ -91,17 +91,17 @@ fun AppNavigation() {
                     title = {
                         Text(
                             when (currentDestination) {
-                                Screen.Register.route -> "Регистрация"
-                                Screen.Profile.route -> "Профиль"
-                                Screen.Orders.route -> "Заказы"
-                                Screen.Home.route  -> "Главная"
-                                Screen.RecipientList.route -> "Список получателей"
-                                Screen.RecipientDetail.route -> "Получатель"
-                                Screen.RecipientAdd.route -> "Новый получатель"
-                                Screen.RecipientEdit.route -> "Редактирование"
-                                Screen.OrderDetail.route -> "Данные о заказе"
-                                Screen.OrderAdd.route -> "Добавить заказ"
-                                Screen.FAQ.route -> "Часто задаваемые вопросы"
+                                Screen.Register.route -> stringResource(R.string.signup)
+                                Screen.Profile.route -> stringResource(R.string.Profile)
+                                Screen.Orders.route -> stringResource(R.string.orders)
+                                Screen.Home.route  -> stringResource(R.string.main)
+                                Screen.RecipientList.route -> stringResource(R.string.list_recipients)
+                                Screen.RecipientDetail.route -> stringResource(R.string.recipient)
+                                Screen.RecipientAdd.route -> stringResource(R.string.new_recipient)
+                                Screen.RecipientEdit.route -> stringResource(R.string.Editing)
+                                Screen.OrderDetail.route -> stringResource(R.string.order_Information)
+                                Screen.OrderAdd.route -> stringResource(R.string.add_ordering)
+                                Screen.FAQ.route -> stringResource(R.string.FAQ)
                                 else -> ""
                             },
 
@@ -114,7 +114,10 @@ fun AppNavigation() {
                     navigationIcon = {
                         if (currentDestination !in listOf("home", "profile")) {
                             IconButton(onClick = { navController.popBackStack() }) {
-                                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Назад")
+                                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(
+                                    R.string.Back
+                                )
+                                )
                             }
                         }
                     }
@@ -140,9 +143,9 @@ fun AppNavigation() {
                         icon = {
                             Icon(
                             painter = painterResource(R.drawable.ic_home),
-                            contentDescription = "Главная"
+                            contentDescription = stringResource(R.string.main)
                         ) },
-                        label = { Text("Главная") },
+                        label = { Text(stringResource(R.string.main)) },
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = Color(0xFF0B57D0),
                             selectedTextColor = Color(0xFF0B57D0),
@@ -165,9 +168,9 @@ fun AppNavigation() {
                         icon = {
                             Icon(
                                 painter = painterResource(R.drawable.ic_order),
-                                contentDescription = "Заказы"
+                                contentDescription = stringResource(R.string.orders)
                             ) },
-                        label = { Text("Заказы") },
+                        label = { Text(stringResource(R.string.orders)) },
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = Color(0xFF0B57D0),
                             selectedTextColor = Color(0xFF0B57D0),
@@ -189,9 +192,9 @@ fun AppNavigation() {
                         icon = {
                             Icon(
                                 painter = painterResource(R.drawable.ic_profile),
-                                contentDescription = "Профиль"
+                                contentDescription = stringResource(R.string.Profile)
                             ) },
-                        label = { Text("Профиль") },
+                        label = { Text(stringResource(R.string.Profile)) },
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = Color(0xFF0B57D0),
                             selectedTextColor = Color(0xFF0B57D0),

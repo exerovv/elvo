@@ -27,9 +27,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.elvo.R
 import com.example.elvo.domain.model.recipient.RecipientFull
 import com.example.elvo.ui.navigation.Screen
 import com.example.elvo.ui.theme.AppTextFieldDefaults.textFieldColors
@@ -43,7 +45,6 @@ import kotlinx.coroutines.flow.collectLatest
 fun RecipientDetailScreen(navController: NavController,recipientId: Int, recipientViewModel: RecipientViewModel = hiltViewModel()) {
     val singleState = recipientViewModel.singleRecipientState
     val updateState = recipientViewModel.updateState
-    val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
     var isEditing by remember { mutableStateOf(false) }
@@ -75,8 +76,6 @@ fun RecipientDetailScreen(navController: NavController,recipientId: Int, recipie
                 }
 
                 is SingleRecipientUIState.Unauthorized -> {
-                    Toast
-                        .makeText(context, "Вы не авторизованы", Toast.LENGTH_LONG).show()
                 }
 
                 SingleRecipientUIState.Default -> {}
@@ -88,21 +87,22 @@ fun RecipientDetailScreen(navController: NavController,recipientId: Int, recipie
         updateState.collectLatest { state ->
             when (state) {
                 is RecipientUpdateUIState.Success -> {
-                    Toast.makeText(context, "Данные обновлены", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,
+                        context.getString(R.string.data_updated), Toast.LENGTH_SHORT).show()
                     isEditing = false
                     recipientViewModel.fetchSingleRecipient(recipientId)
                 }
 
                 is RecipientUpdateUIState.RequiredFieldsAreEmpty -> {
-                    Toast.makeText(context, "Заполните все поля", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context.getString(R.string.required_fields), Toast.LENGTH_LONG).show()
                 }
 
                 is RecipientUpdateUIState.NothingChanged -> {
-                    Toast.makeText(context, "Изменения не обнаружены", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context,
+                        context.getString(R.string.No_changes_detected), Toast.LENGTH_LONG).show()
                 }
 
                 is RecipientUpdateUIState.Unauthorized -> {
-                    Toast.makeText(context, "Вы не авторизованы", Toast.LENGTH_LONG).show()
                     navController.navigate(Screen.Login.route) {
                     }
                 }
@@ -126,16 +126,16 @@ fun RecipientDetailScreen(navController: NavController,recipientId: Int, recipie
                 .background(Color(0xFFF7FAFC))
         ) {
             Text(
-                "Данные",
+                stringResource(R.string.Data),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            RecipientField(label = "Имя", value = name, isEditing = isEditing) { name = it }
-            RecipientField(label = "Номер телефона", value = phone, isEditing = isEditing) { phone = it }
-            RecipientField(label = "Адрес", value = address, isEditing = isEditing) { address = it }
+            RecipientField(label = stringResource(R.string.name), value = name, isEditing = isEditing) { name = it }
+            RecipientField(label = stringResource(R.string.phone_number), value = phone, isEditing = isEditing) { phone = it }
+            RecipientField(label = stringResource(R.string.address), value = address, isEditing = isEditing) { address = it }
 
             Spacer(modifier = Modifier.weight(1f))
 
@@ -149,7 +149,7 @@ fun RecipientDetailScreen(navController: NavController,recipientId: Int, recipie
                     .padding(vertical = 16.dp),
                 shape = RoundedCornerShape(6.dp)
             ) {
-                Text("Редактировать", color = Color.White)
+                Text(stringResource(R.string.Edit), color = Color.White)
             }
         }
     }

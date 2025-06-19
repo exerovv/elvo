@@ -26,9 +26,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.elvo.R
 import com.example.elvo.domain.model.recipient.RecipientShort
 import com.example.elvo.ui.navigation.Screen
 import com.example.elvo.ui.viewmodels.recipient.RecipientListUIState
@@ -112,7 +114,7 @@ fun RecipientListScreen(navController: NavController, recipientViewModel: Recipi
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0B57D0)),
                     shape = RoundedCornerShape(6.dp)
                 ) {
-                    Text("Добавить получателя", color = Color.White)
+                    Text(stringResource(R.string.add_recipient), color = Color.White)
                 }
             }
         }

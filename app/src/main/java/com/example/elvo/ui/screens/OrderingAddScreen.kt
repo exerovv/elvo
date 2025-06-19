@@ -33,10 +33,12 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.elvo.R
 import com.example.elvo.domain.model.order.Order
 import com.example.elvo.domain.model.recipient.RecipientShort
 import com.example.elvo.ui.navigation.Screen
@@ -60,7 +62,6 @@ fun OrderingAddScreen(navController: NavController,
 
     val focusManager = LocalFocusManager.current
     val coroutineScope = rememberCoroutineScope()
-
     var trackNumber by remember { mutableStateOf("") }
     var orderName by remember { mutableStateOf("") }
     var descriptionRu by remember { mutableStateOf("") }
@@ -80,7 +81,6 @@ fun OrderingAddScreen(navController: NavController,
                 ).show()
             }
             is RecipientListUIState.Unauthorized -> {
-                Toast.makeText(context, "Неавторизованный доступ", Toast.LENGTH_SHORT).show()
                 navController.navigate(Screen.Login.route) {
                 }
             }
@@ -91,12 +91,13 @@ fun OrderingAddScreen(navController: NavController,
     LaunchedEffect(addOrderState) {
         when (addOrderState) {
             is OrderAddUIState.Success -> {
-                Toast.makeText(context, "Заказ успешно добавлен", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,
+                    context.getString(R.string.added_successfully), Toast.LENGTH_SHORT).show()
                 navController.popBackStack()
             }
-            is OrderAddUIState.RequiredFieldsAreEmpty -> Toast.makeText(context, "Пожалуйста, заполните все обязательные поля", Toast.LENGTH_SHORT).show()
-            is OrderAddUIState.IncorrectLink -> Toast.makeText(context, "Некорректная ссылка", Toast.LENGTH_SHORT).show()
-            is OrderAddUIState.Unauthorized -> Toast.makeText(context, "Вы не авторизованы", Toast.LENGTH_SHORT).show()
+            is OrderAddUIState.RequiredFieldsAreEmpty -> Toast.makeText(context, context.getString(R.string.fill_required_fields), Toast.LENGTH_SHORT).show()
+            is OrderAddUIState.IncorrectLink -> Toast.makeText(context, context.getString(R.string.incorrect_link), Toast.LENGTH_SHORT).show()
+            is OrderAddUIState.Unauthorized -> {}
             is OrderAddUIState.Error -> Toast.makeText(context, context.getString((addOrderState as OrderAddUIState.Error).errorResId), Toast.LENGTH_SHORT).show()
             null -> {}
         }
@@ -117,7 +118,7 @@ fun OrderingAddScreen(navController: NavController,
             OutlinedTextField(
                 value = trackNumber,
                 onValueChange = { trackNumber = it },
-                label = { Text("Трек номер") },
+                label = { Text(stringResource(R.string.track_number)) },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
@@ -129,7 +130,7 @@ fun OrderingAddScreen(navController: NavController,
             OutlinedTextField(
                 value = orderName,
                 onValueChange = { orderName = it },
-                label = { Text("Название заказа") },
+                label = { Text(stringResource(R.string.order_name)) },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
@@ -141,7 +142,7 @@ fun OrderingAddScreen(navController: NavController,
             OutlinedTextField(
                 value = descriptionRu,
                 onValueChange = { descriptionRu = it },
-                label = { Text("Описание товара (RU)") },
+                label = { Text(stringResource(R.string.product_description_ru)) },
                 minLines = 3,
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
@@ -154,7 +155,7 @@ fun OrderingAddScreen(navController: NavController,
             OutlinedTextField(
                 value = descriptionCn,
                 onValueChange = { descriptionCn = it },
-                label = { Text("Описание товара (CH)") },
+                label = { Text(stringResource(R.string.product_description_ch)) },
                 minLines = 3,
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
@@ -167,7 +168,7 @@ fun OrderingAddScreen(navController: NavController,
             OutlinedTextField(
                 value = poizonLink,
                 onValueChange = { poizonLink = it },
-                label = { Text("Ссылка на Poizon") },
+                label = { Text(stringResource(R.string.poizon)) },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
@@ -179,7 +180,7 @@ fun OrderingAddScreen(navController: NavController,
             OutlinedTextField(
                 value = price,
                 onValueChange = { price = it },
-                label = { Text("Цена") },
+                label = { Text(stringResource(R.string.price)) },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
@@ -214,7 +215,8 @@ fun OrderingAddScreen(navController: NavController,
                             orderViewModel.addOrder(order)
                         }
                     } else {
-                        Toast.makeText(context, "Выберите получателя", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context,
+                            context.getString(R.string.select_recipient), Toast.LENGTH_SHORT).show()
                     }
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0B57D0)),
@@ -223,7 +225,7 @@ fun OrderingAddScreen(navController: NavController,
                     .padding(vertical = 16.dp),
                 shape = RoundedCornerShape(6.dp)
             ) {
-                Text("Добавить", color = Color.White)
+                Text(stringResource(R.string.add_title), color = Color.White)
             }
         }
     }
@@ -243,10 +245,10 @@ fun RecipientDropdownMenu(
         onExpandedChange = { expanded = !expanded },
     ) {
         TextField(
-            value = selectedRecipient?.name ?: "Выберите получателя",
+            value = selectedRecipient?.name ?: stringResource(R.string.select_recipient),
             onValueChange = {},
             readOnly = true,
-            label = { Text("Получатель") },
+            label = { Text(stringResource(R.string.recipient)) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier
                 .menuAnchor()

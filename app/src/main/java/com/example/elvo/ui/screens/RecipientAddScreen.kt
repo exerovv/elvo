@@ -35,6 +35,7 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -116,7 +117,6 @@ fun RecipientAddScreen(navController: NavController, recipientViewModel: Recipie
                     Toast.makeText(context, context.getString(R.string.fill_required_fields), Toast.LENGTH_SHORT).show()
                 }
                 is RecipientAddUIState.Unauthorized -> {
-                    Toast.makeText(context, "Неавторизованный доступ", Toast.LENGTH_SHORT).show()
                     navController.navigate(Screen.Login.route) {
                     }
                 }
@@ -135,7 +135,7 @@ fun RecipientAddScreen(navController: NavController, recipientViewModel: Recipie
         ) {
 
             Text(
-                text = "Введите данные о новом получателе",
+                text = stringResource(R.string.enter_details_new_recipient),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
@@ -145,7 +145,7 @@ fun RecipientAddScreen(navController: NavController, recipientViewModel: Recipie
             OutlinedTextField(
                 value = surname,
                 onValueChange = { surname = it },
-                label = { Text("Фамилия") },
+                label = { Text(stringResource(R.string.Surname)) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = textFieldColors,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -171,13 +171,13 @@ fun RecipientAddScreen(navController: NavController, recipientViewModel: Recipie
                     checked = hasNoMiddleName,
                     onCheckedChange = { hasNoMiddleName = it }
                 )
-                Text("Нет отчества")
+                Text(stringResource(R.string.no_patronymic))
             }
 
             OutlinedTextField(
                 value = patronymic,
                 onValueChange = { patronymic = it },
-                label = { Text("Отчество") },
+                label = { Text(stringResource(R.string.patronymic)) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = textFieldColors,
                 enabled = !hasNoMiddleName,
@@ -190,7 +190,7 @@ fun RecipientAddScreen(navController: NavController, recipientViewModel: Recipie
             OutlinedTextField(
                 value = city,
                 onValueChange = { city = it },
-                label = { Text("Город") },
+                label = { Text(stringResource(R.string.City)) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = textFieldColors,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -202,7 +202,7 @@ fun RecipientAddScreen(navController: NavController, recipientViewModel: Recipie
             OutlinedTextField(
                 value = street,
                 onValueChange = { street = it },
-                label = { Text("Улица") },
+                label = { Text(stringResource(R.string.Street)) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = textFieldColors,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -227,7 +227,7 @@ fun RecipientAddScreen(navController: NavController, recipientViewModel: Recipie
                 OutlinedTextField(
                     value = building,
                     onValueChange = { building = it },
-                    label = { Text("Корпус", fontSize = 10.sp) },
+                    label = { Text(stringResource(R.string.Building), fontSize = 10.sp) },
                     modifier = Modifier.weight(1f),
                     colors = textFieldColors,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -236,7 +236,7 @@ fun RecipientAddScreen(navController: NavController, recipientViewModel: Recipie
                 OutlinedTextField(
                     value = flat,
                     onValueChange = { flat = it },
-                    label = { Text("Квартира", fontSize = 10.sp) },
+                    label = { Text(stringResource(R.string.Flat), fontSize = 10.sp) },
                     modifier = Modifier.weight(1f),
                     colors = textFieldColors,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -245,7 +245,7 @@ fun RecipientAddScreen(navController: NavController, recipientViewModel: Recipie
                 OutlinedTextField(
                     value = floor,
                     onValueChange = { floor = it },
-                    label = { Text("Этаж", fontSize = 10.sp) },
+                    label = { Text(stringResource(R.string.Floor), fontSize = 10.sp) },
                     modifier = Modifier.weight(1f),
                     colors = textFieldColors,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -258,7 +258,7 @@ fun RecipientAddScreen(navController: NavController, recipientViewModel: Recipie
             OutlinedTextField(
                 value = phone,
                 onValueChange = { phone = it },
-                label = { Text("Номер телефона") },
+                label = { Text(stringResource(R.string.phone_number)) },
                 modifier = Modifier.fillMaxWidth(),
                 colors = textFieldColors,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -292,7 +292,7 @@ fun RecipientAddScreen(navController: NavController, recipientViewModel: Recipie
                     .padding(vertical = 16.dp),
                 shape = RoundedCornerShape(6.dp)
             ) {
-                Text("Сохранить", color = Color.White)
+                Text(stringResource(R.string.Save), color = Color.White)
             }
             ConfirmExitDialog(
                 visible = openExitDialog.value,
@@ -311,8 +311,8 @@ fun ConfirmExitDialog(
     visible: Boolean,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
-    title: String = "Подтверждение",
-    message: String = "Вы действительно хотите выйти без сохранения?"
+    title: String = stringResource(R.string.Confirmation),
+    message: String = stringResource(R.string.exit_without_saving)
 ) {
     if (visible) {
         AlertDialog(
@@ -320,10 +320,10 @@ fun ConfirmExitDialog(
             title = { Text(title) },
             text = { Text(message) },
             confirmButton = {
-                TextButton(onClick = onConfirm) { Text("Да") }
+                TextButton(onClick = onConfirm) { Text(stringResource(R.string.Yes)) }
             },
             dismissButton = {
-                TextButton(onClick = onDismiss) { Text("Отмена") }
+                TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
             },
             shape = RoundedCornerShape(16.dp),
             containerColor = Color.White

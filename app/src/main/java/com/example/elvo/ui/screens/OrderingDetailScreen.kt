@@ -35,12 +35,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil3.compose.rememberAsyncImagePainter
+import com.example.elvo.R
 import com.example.elvo.ui.navigation.Screen
 import com.example.elvo.ui.viewmodels.order.OrderHistoryUIState
 import com.example.elvo.ui.viewmodels.order.OrderViewModel
@@ -84,13 +86,13 @@ fun OrderingDetailScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    OrderField(label = "Статус", value = order.currentStatus)
-                    OrderField(label = "Вес товара", value = "${order.weight} кг")
-                    OrderField(label = "Дата создания", value = formatDateForUi(order.createdAt))
-                    OrderField(label = "Ссылка", value = order.link)
-                    OrderField(label = "Описание(RU)", value = order.ruDescription)
-                    OrderField(label = "Описание(CH)", value = order.chDescription)
-                    OrderField(label = "Итоговая сумма", value = order.totalPrice.toString())
+                    OrderField(label = stringResource(R.string.status_title), value = order.currentStatus)
+                    OrderField(label = stringResource(R.string.product_weight), value = "${order.weight} кг")
+                    OrderField(label = stringResource(R.string.Date_creation), value = formatDateForUi(order.createdAt))
+                    OrderField(label = stringResource(R.string.Link), value = order.link)
+                    OrderField(label = stringResource(R.string.description_ru), value = order.ruDescription)
+                    OrderField(label = stringResource(R.string.description_ch), value = order.chDescription)
+                    OrderField(label = stringResource(R.string.total_price), value = order.totalPrice.toString())
 
                     Spacer(modifier = Modifier.height(16.dp))
                     Row(
@@ -109,7 +111,7 @@ fun OrderingDetailScreen(
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0B57D0)),
                             shape = RoundedCornerShape(6.dp)
                         ) {
-                            Text("Отследить", color = Color.White)
+                            Text(stringResource(R.string.track), color = Color.White)
                         }
                     }
 
@@ -117,7 +119,7 @@ fun OrderingDetailScreen(
                 }
 
                 is SingleOrderUIState.Error -> {
-                    Text("Ошибка")
+                    Text(stringResource(R.string.unknown_error))
                 }
 
                 is SingleOrderUIState.Unauthorized -> {
@@ -125,9 +127,7 @@ fun OrderingDetailScreen(
                     }
                 }
 
-                else -> {
-                    Text("Загрузка...")
-                }
+                else -> {}
             }
 
             Spacer(modifier = Modifier.weight(1f))
@@ -139,10 +139,10 @@ fun OrderingDetailScreen(
             onDismissRequest = { isDialogOpen = false },
             confirmButton = {
                 TextButton(onClick = { isDialogOpen = false }) {
-                    Text("Закрыть")
+                    Text(stringResource(R.string.Close))
                 }
             },
-            title = { Text("История заказа") },
+            title = { Text(stringResource(R.string.Order_history)) },
             text = {
                 when (val history = historyState) {
                     is OrderHistoryUIState.Success -> {
@@ -180,9 +180,9 @@ fun OrderingDetailScreen(
                             }
                         }
                     }
-                    is OrderHistoryUIState.Error -> Text("Ошибка при получении истории")
-                    is OrderHistoryUIState.Unauthorized -> Text("Неавторизован")
-                    else -> Text("Загрузка истории...")
+                    is OrderHistoryUIState.Error -> {}
+                    is OrderHistoryUIState.Unauthorized -> {}
+                    else -> Text(stringResource(R.string.state_loading))
                 }
             }
         )

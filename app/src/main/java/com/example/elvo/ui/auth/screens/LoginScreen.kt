@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -78,7 +79,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit, onRegisterClick: () -> Unit, authVie
                 OutlinedTextField(
                     value = login,
                     onValueChange = { login = it },
-                    label = { Text("Логин") },
+                    label = { Text(stringResource(R.string.login)) },
                     modifier = Modifier.fillMaxWidth(),
                     colors = textFieldColors,
                     enabled = !isLoading
@@ -90,7 +91,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit, onRegisterClick: () -> Unit, authVie
                 OutlinedTextField(
                     value = password,
                     onValueChange = {password = it },
-                    label = { Text("Пароль") },
+                    label = { Text(stringResource(R.string.password))},
                     modifier = Modifier.fillMaxWidth(),
                     visualTransformation = PasswordVisualTransformation(),
                     colors = textFieldColors,
@@ -107,7 +108,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit, onRegisterClick: () -> Unit, authVie
                     shape = RoundedCornerShape(6.dp),
                     enabled = !isLoading
                 ) {
-                    Text("Войти", color = Color.White)
+                    Text(stringResource(R.string.login_button), color = Color.White)
                 }
             }
 
@@ -118,7 +119,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit, onRegisterClick: () -> Unit, authVie
                     .padding(bottom = 20.dp)
             ) {
                 Text(
-                    "Нет аккаунта? Зарегистрироваться",
+                    stringResource(R.string.sigiup_button),
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Black
                 )
